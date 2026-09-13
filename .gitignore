@@ -23,3 +23,7 @@ release
 *.log
 .local/
 artifacts/
+
+# Local test and Vite caches
+coverage/
+.vite/

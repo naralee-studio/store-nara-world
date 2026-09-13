@@ -1,0 +1,112 @@
+@import "@astryxdesign/core/astryx.css";
+/* Astryx owns its controls; native storefront defaults remain in a lower layer. */
+.nara-purchase {
+  display: grid;
+  gap: 1.15rem;
+  padding-top: 1.5rem;
+}
+.selection-status:empty {
+  display: none;
+}
+.selection-status {
+  font-size: 0.875rem;
+}
+.selection-recovery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.nara-gallery {
+  min-width: 0;
+}
+.nara-image-button {
+  position: relative;
+  display: block;
+  padding: 0;
+  width: 100%;
+  border: 0;
+  background: var(--nara-image-background);
+  color: var(--color-foreground);
+  cursor: zoom-in;
+}
+.nara-image-button:hover {
+  opacity: 1;
+}
+.nara-image-button img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  object-fit: contain;
+}
+.image-enlarge {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 1.5rem;
+}
+.gallery-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  font-size: 0.75rem;
+  margin-block: 0.5rem;
+}
+.gallery-navigation button {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem;
+}
+.nara-thumbnail {
+  padding: 3px;
+  width: 96px;
+  height: 78px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+}
+.nara-thumbnail[aria-current] {
+  border-color: var(--color-foreground);
+}
+.nara-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.nara-thumbnail:hover {
+  opacity: 0.75;
+}
+.nara-lightbox {
+  font-family: var(--nara-font-body);
+}
+.nara-purchase input[role="spinbutton"] {
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+@media (max-width: 749px) {
+  .nara-thumbnail {
+    width: 76px;
+    height: 62px;
+  }
+}
+
+.lightbox-load-status {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: #20201e;
+  color: #fff;
+  font-family: var(--nara-font-body);
+  font-size: 0.875rem;
+  pointer-events: none;
+}

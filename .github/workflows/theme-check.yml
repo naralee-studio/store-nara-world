@@ -16,5 +16,9 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run assets:check
+      - run: git diff --exit-code -- assets/
       - run: npm run check
       - run: node --check assets/theme.js

@@ -1,3 +1,4 @@
+@layer nara-base {
 /* Base layout adapted from Shopify Skeleton. See LICENSE.md. */
 * { box-sizing: border-box; margin: 0; }
 :root { --line: color-mix(in srgb, var(--color-foreground) 20%, transparent); }
@@ -110,3 +111,20 @@ s { opacity: .6; }
   .search-form button { padding-inline: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+}
+
+@font-face { font-family: Nara Display; src: url('./nara-display.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+:root { --nara-font-body: "Helvetica Neue", Helvetica, Arial, sans-serif; --nara-font-display: "Nara Display", "Arial Rounded MT Bold", sans-serif; --nara-yellow:#FFD300; --nara-blue:#38B2FF; --nara-green:#19671B; --nara-red:#FE3B1F; --nara-line:color-mix(in srgb,var(--color-foreground) 22%,transparent); --nara-image-background:#fafafa; }
+body { font-family:var(--nara-font-body); }
+.wordmark { font-family:var(--nara-font-display); font-size:3.8rem; font-weight:400; letter-spacing:0; }
+.product-details h1 { font-family:var(--nara-font-display); font-size:clamp(3.5rem,6vw,6.5rem); letter-spacing:0; line-height:1; }
+.product-card-caption h3 { font-family:var(--nara-font-display); font-size:2rem; letter-spacing:0; }
+.product-fallback { border:0; padding:0; min-width:0; display:grid; gap:.7rem; }
+[hidden] { display:none !important; }
+.release-status { text-transform:uppercase; font-size:.75rem; letter-spacing:.1em; margin-top:2rem; }
+.gallery-empty { display:grid; place-content:center; min-height:280px; aspect-ratio:4/3; background:var(--nara-image-background); font-size:.875rem; }
+.product-other-media > * { margin-top:1rem; max-width:100%; }
+[data-product-root], script[data-product-state] { display:none; }
+.product-details .product-description { font-size:.9375rem; max-width:38rem; }
+@media (max-width:749px) { .wordmark {font-size:3rem;} .product-details h1 {font-size:4rem;} }

@@ -11,7 +11,11 @@
   "sections": {
     "main": {
       "type": "product",
-      "settings": {}
+      "settings": {
+        "enable_purchase": true,
+        "show_price": true,
+        "show_dynamic_checkout": false
+      }
     }
   },
   "order": [

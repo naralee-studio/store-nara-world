@@ -1,41 +1,73 @@
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign featured_image = current_variant.featured_image | default: product.featured_image
+  assign featured_image = nil
   assign product_form_id = 'ProductForm-' | append: section.id
 %}
-<nara-product class="product-layout section-space" data-section-id="{{ section.id }}">
+{% capture gallery_ids %}{% render 'product-gallery-ids', product: product, section: section %}{% endcapture %}
+{% liquid
+  assign gallery_ids = gallery_ids | strip | split: '|'
+  assign first_image_id = nil
+  for id in gallery_ids
+    unless id == blank
+      assign first_image_id = id
+      break
+    endunless
+  endfor
+  if section.settings.gallery_policy == 'all' or product.has_only_default_variant
+    if current_variant.featured_media.media_type == 'image'
+      assign first_image_id = current_variant.featured_media.id | append: ''
+    endif
+  endif
+  for media in product.media
+    assign media_id = media.id | append: ''
+    if media_id == first_image_id
+      assign featured_image = media.preview_image
+      break
+    endif
+  endfor
+%}
+<div class="product-layout section-space" data-product-experience data-locale-root="{{ routes.root_url }}" data-section-id="{{ section.id }}">
   <div class="product-gallery">
-    {% if featured_image %}<div class="product-featured-image">{{ featured_image | image_url: width: 1600 | image_tag: widths: '480, 800, 1200, 1600', sizes: '(min-width: 900px) 60vw, 100vw', loading: 'eager' }}</div>{% endif %}
-    <div class="product-thumbnails">
-      {% for image in product.images %}<a href="{{ image | image_url: width: 2200 }}" data-gallery-image>{{ image | image_url: width: 320 | image_tag: loading: 'lazy' }}<span class="visually-hidden">{{ 'product.view_image' | t: number: forloop.index }}</span></a>{% endfor %}
+    <div data-gallery-fallback>
+      {% if featured_image %}<div class="product-featured-image">{{ featured_image | image_url: width: 1600 | image_tag: widths: '480, 800, 1200, 1600', sizes: '(min-width: 900px) 60vw, 100vw', loading: 'eager', fetchpriority: 'high' }}</div>{% else %}<div class="gallery-empty">{{ 'product.no_image' | t }}</div>{% endif %}
     </div>
-    {% for media in product.media %}{% unless media.media_type == 'image' %}{{ media | media_tag: controls: true }}{% endunless %}{% endfor %}
+    <div data-gallery-mount></div>
+    <div class="product-other-media">{% for media in product.media %}{% unless media.media_type == 'image' %}{{ media | media_tag: controls: true }}{% endunless %}{% endfor %}</div>
   </div>
   <div class="product-details">
     <h1>{{ product.title | escape }}</h1>
-    <p class="product-price" aria-live="polite" data-price>{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>
+    <div data-price-fallback>{% if section.settings.show_price and current_variant %}<p class="product-price">{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>{% endif %}</div>
+    <div data-price-mount></div>
     {% form 'product', product, id: product_form_id %}
       {{ form.errors | default_errors }}
-      {% if product.has_only_default_variant %}
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
-      {% else %}
-        <label for="Variant-{{ section.id }}">{{ product.options | join: ' / ' | escape }}</label>
-        <select name="id" id="Variant-{{ section.id }}" data-variant-select>
-          {% for variant in product.variants %}
-            <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %}>{{ variant.title | escape }} · {{ variant.price | money_with_currency }}{% unless variant.available %} · {{ 'product.sold_out' | t }}{% endunless %}</option>
+      <fieldset data-input-fallback class="product-fallback">
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <label for="Option-{{ section.id }}-{{ option.position }}">{{ option.name | escape }}</label>
+            <select id="Option-{{ section.id }}-{{ option.position }}" data-option-position="{{ option.position }}">
+              {% for value in option.values %}<option value="{{ value.id }}" data-product-url="{{ value.product_url | escape }}" {% if value.selected %}selected{% endif %}>{{ value.name | escape }}</option>{% endfor %}
+            </select>
           {% endfor %}
-        </select>
-        <noscript><p>{{ 'product.no_script' | t }}</p>{% for variant in product.variants %}<a href="{{ product.url }}?variant={{ variant.id }}">{{ variant.title | escape }}</a> {% endfor %}</noscript>
-      {% endif %}
-      <label for="Quantity-{{ section.id }}">{{ 'product.quantity' | t }}</label>
-      <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="{{ current_variant.quantity_rule.min | default: 1 }}" step="{{ current_variant.quantity_rule.increment | default: 1 }}" {% if current_variant.quantity_rule.max %}max="{{ current_variant.quantity_rule.max }}"{% endif %} value="{{ current_variant.quantity_rule.min | default: 1 }}" required>
-      <button type="submit" name="add" class="add-to-cart" {% unless current_variant.available %}disabled{% endunless %}>{% if current_variant.available %}{{ 'product.add_to_cart' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</button>
-      {% if section.settings.show_dynamic_checkout and current_variant.available %}{{ form | payment_button }}{% endif %}
+          <noscript><p>{{ 'product.no_script' | t }}</p>{% for option in product.options_with_values %}{% for value in option.values %}<a href="{{ product.url }}?option_values={% for axis in product.options_with_values %}{% if axis.position == option.position %}{{ value.id }}{% else %}{% for candidate in axis.values %}{% if candidate.selected %}{{ candidate.id }}{% endif %}{% endfor %}{% endif %}{% unless forloop.last %},{% endunless %}{% endfor %}">{{ value.name | escape }}</a> {% endfor %}{% endfor %}</noscript>
+        {% endunless %}
+        {% if section.settings.enable_purchase %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+          <label for="Quantity-{{ section.id }}">{{ 'product.quantity' | t }}</label>
+          <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="{{ current_variant.quantity_rule.min | default: 1 }}" step="{{ current_variant.quantity_rule.increment | default: 1 }}" {% if current_variant.quantity_rule.max %}max="{{ current_variant.quantity_rule.max }}"{% endif %} value="{{ current_variant.quantity_rule.min | default: 1 }}" required>
+          <button type="submit" name="add" class="add-to-cart" {% unless current_variant.available %}disabled{% endunless %}>{% if current_variant == blank %}{{ 'product.unavailable' | t }}{% elsif current_variant.available %}{{ 'product.add_to_cart' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</button>
+        {% endif %}
+      </fieldset>
+      <div data-input-mount></div>
+      <div data-payment {% unless section.settings.enable_purchase and current_variant.available %}hidden inert{% endunless %}>
+        {% if section.settings.show_dynamic_checkout and section.settings.enable_purchase %}{{ form | payment_button }}{% endif %}
+      </div>
     {% endform %}
     <div class="rte product-description">{{ product.description }}</div>
     {% for block in section.blocks %}{% render block %}{% endfor %}
   </div>
-</nara-product>
+  <div data-product-root></div>
+  {% render 'product-state', product: product, section: section %}
+</div>
 {% schema %}
-{"name":"Product","settings":[{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout","default":false}],"blocks":[{"type":"@app"}],"disabled_on":{"groups":["header","footer"]}}
+{"name":"Product","settings":[{"type":"checkbox","id":"enable_purchase","label":"Enable purchasing","info":"Enable only after this product template is approved for sale.","default":false},{"type":"checkbox","id":"show_price","label":"Show price","default":false},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout","default":false},{"type":"select","id":"gallery_policy","label":"Image gallery","options":[{"value":"variant_common","label":"Selected variant and shared images"},{"value":"all","label":"All product images"}],"default":"variant_common"}],"blocks":[{"type":"@app"}],"disabled_on":{"groups":["header","footer"]}}
 {% endschema %}

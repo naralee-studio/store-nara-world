@@ -1,0 +1,54 @@
+{% doc %}
+  Minimal server-resolved state for a single product experience.
+  @param {product} product
+  @param {section} section
+{% enddoc %}
+{% liquid
+  assign variant = product.selected_or_first_available_variant
+%}
+{% capture gallery_ids %}{% render 'product-gallery-ids', product: product, section: section %}{% endcapture %}
+{% assign gallery_ids = gallery_ids | strip | split: '|' | compact %}
+{% capture state %}
+{
+  "productId": {{ product.id | append: '' | json }},
+  "sectionId": {{ section.id | json }},
+  "productUrl": {{ product.url | json }},
+  "localeRoot": {{ routes.root_url | json }},
+  "defaultOnly": {{ product.has_only_default_variant | json }},
+  "purchaseEnabled": {{ section.settings.enable_purchase | json }},
+  "showPrice": {{ section.settings.show_price | json }},
+  "variant": {% if variant %}{
+    "id": {{ variant.id | append: '' | json }}, "available": {{ variant.available | json }},
+    "price": {{ variant.price | money_with_currency | strip_html | json }},
+    "comparePrice": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money_with_currency | strip_html | json }}{% else %}null{% endif %},
+    "rule": {"min": {{ variant.quantity_rule.min | default: 1 }}, "max": {{ variant.quantity_rule.max | json }}, "increment": {{ variant.quantity_rule.increment | default: 1 }}}
+  }{% else %}null{% endif %},
+  "options": [{% for option in product.options_with_values %}
+    {"name": {{ option.name | json }}, "position": {{ option.position }}, "values": [{% for value in option.values %}
+      {"id": {{ value.id | append: '' | json }}, "name": {{ value.name | json }}, "selected": {{ value.selected | json }}, "available": {{ value.available | json }}, "productUrl": {{ value.product_url | json }}}{% unless forloop.last %},{% endunless %}
+    {% endfor %}]}{% unless forloop.last %},{% endunless %}
+  {% endfor %}],
+  "gallery": {
+    "selectedEntity": {% if variant and product.has_only_default_variant == false %}{"type":"variant","id":{{ variant.id | append: '' | json }}}{% else %}{"type":"product","id":{{ product.id | append: '' | json }}}{% endif %},
+    "featuredMediaId": {% assign first_id = nil %}{% for id in gallery_ids %}{% unless id == blank %}{% assign first_id = id %}{% break %}{% endunless %}{% endfor %}{% if section.settings.gallery_policy == 'all' or product.has_only_default_variant %}{% if variant.featured_media.media_type == 'image' %}{% assign first_id = variant.featured_media.id | append: '' %}{% endif %}{% endif %}{% if first_id %}{{ first_id | json }}{% else %}null{% endif %},
+    "mediaIds": [{% assign separator = '' %}{% for id in gallery_ids %}{% unless id == blank %}{{ separator }}{{ id | json }}{% assign separator = ',' %}{% endunless %}{% endfor %}],
+    "mediaById": { {% assign separator = '' %}{% for media in product.media %}{% if media.media_type == 'image' %}
+      {{ separator }}{{ media.id | append: '' | json }}: {
+        "id": {{ media.id | append: '' | json }},
+        "src": {{ media | image_url: width: 1200 | json }},
+        {% capture responsive_srcset %}{% assign widths = '480,800,1200,1600' | split: ',' %}{% assign source_separator = '' %}{% assign previous_width = 0 %}{% for width in widths %}{% assign candidate_width = width | plus: 0 | at_most: media.preview_image.width %}{% unless candidate_width == previous_width %}{{ source_separator }}{{ media | image_url: width: candidate_width }} {{ candidate_width }}w{% assign source_separator = ', ' %}{% assign previous_width = candidate_width %}{% endunless %}{% endfor %}{% endcapture %}
+        "srcset": {{ responsive_srcset | json }},
+        "sizes": "(min-width: 900px) 60vw, 100vw",
+        "width": {{ media.preview_image.width }}, "height": {{ media.preview_image.height }},
+        "alt": {{ media.alt | default: product.title | json }},
+        "thumbnail": {{ media | image_url: width: 200 | json }}, "zoom": {{ media | image_url: width: 2400 | json }}
+      }{% assign separator = ',' %}
+    {% endif %}{% endfor %}}
+  },
+  "strings": {
+    {% assign keys = 'quantity,add_to_cart,sold_out,unavailable,choose_other,updating,request_error,retry,open_selection,coming_soon,previous,next,gallery,zoom,no_image,image_error,invalid_quantity,option_unavailable,close,zoom_in,zoom_out,increment,decrement' | split: ',' %}
+    {% for key in keys %}{{ key | json }}: {% assign translation = 'product.' | append: key %}{{ translation | t | json }}{% unless forloop.last %},{% endunless %}{% endfor %}
+  }
+}
+{% endcapture %}
+<script type="application/json" data-product-state>{{ state | replace: '<', '\u003c' }}</script>
