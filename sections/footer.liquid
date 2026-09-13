@@ -1,7 +1,0 @@
-<footer class="site-footer">
-  <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</small>
-  {% if shop.privacy_policy.body != blank %}<a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>{% endif %}
-</footer>
-{% schema %}
-{"name":"Footer","settings":[]}
-{% endschema %}

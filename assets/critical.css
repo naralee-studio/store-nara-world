@@ -44,7 +44,6 @@ s { opacity: .6; }
 .product-card-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 .product-card-caption a { text-decoration: none; }
 .product-card-caption p { font-size: .9rem; }
-.site-footer { border-top: 1px solid var(--line); padding-block: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; font-size: .75rem; }
 .catalog-home { padding-block: 1rem 5rem; }
 .product-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: clamp(2rem, 6vw, 6rem); }
 .product-layout > * { min-width: 0; }

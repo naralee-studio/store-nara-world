@@ -1,6 +1,6 @@
 # 구성 및 검수 상태
 
-기준일: 2026-09-13. 이번 단계의 목표는 **미니멀한 메인 제품 리스트와 상품 상세의 로컬 프리뷰**입니다. Contact 폼과 소개 배너는 사용자 요청에 따라 제외했습니다. 운영 공개와 Shopify 관리자 GitHub 연결은 다음 단계입니다.
+기준일: 2026-09-13. 이번 단계의 목표는 **미니멀한 메인 제품 리스트와 상품 상세의 로컬 프리뷰**입니다. Contact 폼·소개 배너·시각적 푸터는 사용자 요청에 따라 제외했습니다. 운영 공개와 Shopify 관리자 GitHub 연결은 다음 단계입니다.
 
 ## 연결
 
@@ -26,7 +26,7 @@
 - 로컬 프리뷰의 Shop Pay 전환에서는 HTTP 401을 관찰함. 결제 검수에는 Shopify 직접 프리뷰 사용.
 - 보조 상품 목록의 가격 정렬, 검색 결과 2건 및 빈 결과 확인. 기본 검색·페이지·404 템플릿은 Skeleton의 보조 경로로 남아 있으며 메인 메뉴에 노출하지 않음.
 - 390px 모바일 메인·상세·장바구니와 1440px 데스크톱 메인·상세 확인. 상세 썸네일은 한 줄 가로 스크롤이며 문서 전체의 가로 넘침은 없음.
-- 최종 Theme Check: 43개 파일, 오류·경고 0. JavaScript 구문 검사 및 Git diff 공백 검사 통과. GitHub Actions의 같은 검사가 main·staging에 적용됨.
+- 최종 Theme Check: 41개 파일, 오류·경고 0. JavaScript 구문 검사 및 Git diff 공백 검사 통과. GitHub Actions의 같은 검사가 main·staging에 적용됨.
 
 ## 운영 테마 조사
 
@@ -47,3 +47,9 @@
 5. 별도 `main` 연결 테마 생성, 출시 커밋·최신 설정·완전한 출시 사본과 기존 Dawn 복구 대상을 확인.
 
 이번 작업은 `prepare`이며, 출시 준비 전체가 완료된 상태로 보고하지 않습니다.
+
+## 푸터와 개인정보 안내
+
+테마에서 푸터와 해당 Privacy policy 링크를 제거했습니다. Shopify 관리자에 저장된 정책, 쿠키 동의 설정, Shopify 결제 화면은 수정하지 않았습니다.
+
+푸터 제거가 개인정보 고지 의무까지 없애지는 않습니다. 공개 전 사업자 소재지·판매 대상국·실제 데이터 수집에 맞춰 정책을 쉽게 찾는 경로와 수집 시점의 안내를 확인해야 합니다. 결제 화면의 정책 링크만으로 모든 방문자에 대한 안내가 충분하다고 판단하지 않습니다. 참고: [CNIL 투명성 안내](https://www.cnil.fr/fr/conformite-rgpd-information-des-personnes-et-transparence), [Shopify 정책 링크](https://help.shopify.com/en/manual/checkout-settings/refund-privacy-tos).
