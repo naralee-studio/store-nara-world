@@ -1,6 +1,6 @@
 <div class="section-space cart-page">
   <h1>{{ 'cart.title' | t }}</h1>
-  {% if cart.empty? %}
+  {% if cart == empty %}
     <div class="empty-state"><p>{{ 'cart.empty' | t }}</p><a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a></div>
   {% else %}
     <form action="{{ routes.cart_url }}" method="post">

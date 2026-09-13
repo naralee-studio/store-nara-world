@@ -26,7 +26,7 @@
 ## 검수
 
 - [x] 최종 Theme Check: 44개 파일, 오류·경고 0. JavaScript 구문 검사 통과.
-- [ ] GitHub Actions 검사
+- [x] GitHub Actions: main / staging 모두 통과. 공개 저장소와 두 브랜치 생성 완료.
 - [ ] Shopify CLI 인증, 실제 테마 목록과 개발 테마 ID
 - [ ] 실제 홈·상품 목록·상품 상세·장바구니·검색·일반 페이지·404 렌더링
 - [ ] family. 7개 옵션별 가격·이미지·수량 및 URL 갱신
