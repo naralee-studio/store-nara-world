@@ -90,3 +90,5 @@ Shopify 관리자에 `nara.gallery_images`(이미지 파일 목록), `nara.galle
 ## Staging 구매 검수 활성화 (2026-09-14)
 
 사용자 요청으로 미공개 staging의 카트/체크아웃 검수를 위해 기본 상품 템플릿의 `enable_purchase`, `show_price`를 true로 설정했습니다. accelerated checkout은 기존 false를 유지하고 Add to cart → Cart → Shopify checkout 경로를 검수합니다. 상품 설명의 COMING SOON, 상품 데이터·재고·결제 설정은 변경하지 않습니다. **main으로 승격하기 전에 이 템플릿의 구매/가격 노출 설정을 실제 출시 결정과 대조해야 합니다.** 미공개 테마도 실제 스토어의 카트·체크아웃을 사용하며 별도의 테스트 결제 모드를 설정한 것은 아닙니다.
+
+Staging 반영 확인: PR #1을 staging에 병합한 뒤 GitHub 연결 테마의 React/Astryx UI 및 구매 설정 반영을 브라우저에서 확인했습니다. 실제 little family 담기 → 카트 수량 1→2 및 €250→€500 합계 변경 → Shopify 체크아웃의 Contact/Delivery/Payment 입력 화면 진입 → 카트로 돌아와 테스트 항목 삭제/빈 카트 복원을 확인했습니다. 개인정보·배송지·카드 입력과 주문 제출은 하지 않았습니다. main과 운영 Dawn의 게시 상태는 변경하지 않았습니다. staging 병합 커밋의 CI도 통과했습니다.
