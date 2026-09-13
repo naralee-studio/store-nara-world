@@ -1,7 +1,30 @@
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign featured_image = current_variant.featured_image | default: product.featured_image
+  assign featured_image = nil
   assign product_form_id = 'ProductForm-' | append: section.id
+%}
+{% capture gallery_ids %}{% render 'product-gallery-ids', product: product, section: section %}{% endcapture %}
+{% liquid
+  assign gallery_ids = gallery_ids | strip | split: '|'
+  assign first_image_id = nil
+  for id in gallery_ids
+    unless id == blank
+      assign first_image_id = id
+      break
+    endunless
+  endfor
+  if section.settings.gallery_policy == 'all' or product.has_only_default_variant
+    if current_variant.featured_media.media_type == 'image'
+      assign first_image_id = current_variant.featured_media.id | append: ''
+    endif
+  endif
+  for media in product.media
+    assign media_id = media.id | append: ''
+    if media_id == first_image_id
+      assign featured_image = media.preview_image
+      break
+    endif
+  endfor
 %}
 <div class="product-layout section-space" data-product-experience data-locale-root="{{ routes.root_url }}" data-section-id="{{ section.id }}">
   <div class="product-gallery">

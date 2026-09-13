@@ -5,15 +5,9 @@
 {% enddoc %}
 {% liquid
   assign variant = product.selected_or_first_available_variant
-  assign attached_sources = product.images | where: 'attached_to_variant?', true | map: 'src'
-  assign filtered = false
-  if section.settings.gallery_policy == 'variant_common'
-    assign filtered = true
-  endif
-  if product.has_only_default_variant
-    assign filtered = false
-  endif
 %}
+{% capture gallery_ids %}{% render 'product-gallery-ids', product: product, section: section %}{% endcapture %}
+{% assign gallery_ids = gallery_ids | strip | split: '|' | compact %}
 {% capture state %}
 {
   "productId": {{ product.id | append: '' | json }},
@@ -36,14 +30,8 @@
   {% endfor %}],
   "gallery": {
     "selectedEntity": {% if variant and product.has_only_default_variant == false %}{"type":"variant","id":{{ variant.id | append: '' | json }}}{% else %}{"type":"product","id":{{ product.id | append: '' | json }}}{% endif %},
-    "featuredMediaId": {% if variant.featured_media.media_type == 'image' %}{{ variant.featured_media.id | append: '' | json }}{% else %}null{% endif %},
-    "mediaIds": [{% assign separator = '' %}
-      {% if filtered and variant.featured_media.media_type == 'image' %}{{ variant.featured_media.id | append: '' | json }}{% assign separator = ',' %}{% endif %}
-      {% for media in product.media %}{% if media.media_type == 'image' %}
-        {% if filtered %}{% if media.id == variant.featured_media.id or attached_sources contains media.src %}{% continue %}{% endif %}{% endif %}
-        {{ separator }}{{ media.id | append: '' | json }}{% assign separator = ',' %}
-      {% endif %}{% endfor %}
-    ],
+    "featuredMediaId": {% assign first_id = nil %}{% for id in gallery_ids %}{% unless id == blank %}{% assign first_id = id %}{% break %}{% endunless %}{% endfor %}{% if section.settings.gallery_policy == 'all' or product.has_only_default_variant %}{% if variant.featured_media.media_type == 'image' %}{% assign first_id = variant.featured_media.id | append: '' %}{% endif %}{% endif %}{% if first_id %}{{ first_id | json }}{% else %}null{% endif %},
+    "mediaIds": [{% assign separator = '' %}{% for id in gallery_ids %}{% unless id == blank %}{{ separator }}{{ id | json }}{% assign separator = ',' %}{% endunless %}{% endfor %}],
     "mediaById": { {% assign separator = '' %}{% for media in product.media %}{% if media.media_type == 'image' %}
       {{ separator }}{{ media.id | append: '' | json }}: {
         "id": {{ media.id | append: '' | json }},

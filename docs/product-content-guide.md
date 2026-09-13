@@ -24,7 +24,24 @@ Shopify 상품의 **옵션**에 실제 판매하는 축과 값을 입력합니�
 
 공통 사진을 특정 variant에 연결하면 다른 variant의 갤러리에서 숨겨집니다. 파일명·alt·색상 문구로 사진 그룹을 판단하지 않습니다. 동영상·외부 동영상·3D는 이미지 갤러리 아래의 Shopify 미디어 영역에 표시합니다.
 
-내부 데이터 계약은 `selectedEntity`, `mediaIds`, `featuredMediaId`, `mediaById`입니다. 향후 variant마다 여러 전용 사진을 지정하려면 metafield/metaobject 매핑, 공통 사진 포함 여부, 매핑 누락과 빈 목록의 의미를 먼저 정합니다. 아직 이 매핑을 만들거나 임의 데이터로 적용하지 않았습니다.
+### variant 전용 이미지 목록
+
+Shopify 설정 → 메타 필드 및 메타 객체 → **이형 상품**에 아래 정의를 생성했습니다 (2026-09-14).
+
+| 표시 이름 | 네임스페이스·키 | 형식 |
+| --- | --- | --- |
+| Gallery images | `nara.gallery_images` | 파일 목록 (`list.file_reference`), 이미지 전용 |
+| Include shared gallery images | `nara.gallery_include_shared` | 참/거짓 (`boolean`), 미입력은 false |
+
+상품 → 해당 variant를 열고 **Gallery images**에서 사진을 선택하고 순서를 정합니다. 같은 파일을 먼저 해당 상품의 미디어에도 추가해야 합니다. 별도로 다시 업로드한 복제 파일은 다른 ID이므로 원래 상품에 등록한 파일을 선택하세요.
+
+- 유효한 목록이 있으면 지정 순서로 표시하며 첫 이미지에서 시작합니다. 기존 variant 대표 이미지가 목록에 없어도 자동으로 끼워 넣지 않습니다.
+- 공통 사진을 뒤에 붙이려면 **Include shared gallery images**를 true로 설정합니다. 중복 사진은 한 번만 표시합니다.
+- 목록이 없거나 비어 있거나 유효한 이미지가 하나도 없으면 기존 대표 이미지 + 공통 이미지 정책을 사용합니다.
+- 삭제된 파일, 다른 상품에만 있는 파일, 이미지가 아닌 파일은 제외합니다. 일부만 유효하면 유효한 사진의 지정 순서를 유지합니다.
+- 테마 설정에서 **All product images**를 고르면 전용 목록보다 전체 이미지 정책을 우선합니다. 기본 variant만 있는 상품도 기존 전체 이미지 정책을 유지합니다.
+
+내부 데이터 계약은 `selectedEntity`, `mediaIds`, `featuredMediaId`, `mediaById`이며, 위 메타필드를 이 계약으로 변환합니다. Liquid 첫 이미지와 React 갤러리가 동일한 목록 계산을 공유합니다.
 
 추가·삭제·재정렬은 다음 페이지 로드/옵션 상태 요청부터 반영됩니다. 열린 화면에 관리자 변경을 실시간으로 전송하는 기능은 없습니다.
 

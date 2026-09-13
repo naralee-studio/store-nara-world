@@ -1,0 +1,54 @@
+{% doc %}
+  Ordered image media IDs, separated by |, shared by Liquid and React data.
+  Variant file lists must reference images already in this product's media.
+  @param {product} product
+  @param {section} section
+{% enddoc %}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign images = product.media | where: 'media_type', 'image'
+  assign attached_sources = product.images | where: 'attached_to_variant?', true | map: 'src'
+  assign mapped_ids = ''
+  assign mapped_field = variant.metafields.nara.gallery_images
+  assign use_variant_policy = false
+  if section.settings.gallery_policy == 'variant_common' and product.has_only_default_variant == false
+    assign use_variant_policy = true
+  endif
+  if use_variant_policy and mapped_field.type == 'list.file_reference'
+    for file in mapped_field.value
+      for media in images
+        if file.id == media.id
+          assign marker = '|' | append: media.id | append: '|'
+          unless mapped_ids contains marker
+            assign mapped_ids = mapped_ids | append: marker
+          endunless
+          break
+        endif
+      endfor
+    endfor
+  endif
+  assign output_ids = mapped_ids
+  if mapped_ids == blank
+    if use_variant_policy and variant.featured_media.media_type == 'image'
+      assign output_ids = '|' | append: variant.featured_media.id | append: '|'
+    endif
+    for media in images
+      if use_variant_policy
+        if media.id == variant.featured_media.id or attached_sources contains media.src
+          continue
+        endif
+      endif
+      assign output_ids = output_ids | append: '|' | append: media.id | append: '|'
+    endfor
+  elsif variant.metafields.nara.gallery_include_shared.value == true
+    for media in images
+      unless attached_sources contains media.src
+        assign marker = '|' | append: media.id | append: '|'
+        unless output_ids contains marker
+          assign output_ids = output_ids | append: marker
+        endunless
+      endunless
+    endfor
+  endif
+  echo output_ids
+-%}
