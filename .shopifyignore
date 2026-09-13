@@ -21,3 +21,10 @@ artifacts/**
 package*.json
 shopify.theme.toml
 .env*
+
+src/**
+scripts/**
+tests/**
+tsconfig.json
+vite.config.ts
+vitest.config.ts

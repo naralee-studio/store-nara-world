@@ -4,39 +4,46 @@
 
 ## 시작하기
 
-Node.js **22.12 이상**이 필요합니다. `.nvmrc`와 CI는 Node 24 LTS를 사용합니다. npm, Git이 있으면 전역 Shopify CLI 설치는 필요 없습니다.
+Node.js **24 LTS**를 권장합니다 (지원: 22.12+, 24, 26 이상 짝수 릴리스). `.nvmrc`와 CI는 Node 24 LTS를 사용합니다. npm, Git이 있으면 전역 Shopify CLI 설치는 필요 없습니다.
 
 ```sh
 cd store-nara-world
 npm ci
+npm run typecheck
+npm test
+npm run assets:check
 npm run check
 npm run dev
 ```
 
-첫 실행 시 브라우저에서 **스토어 소유자 또는 테마 권한이 있는 계정**으로 Shopify CLI에 로그인합니다. CLI가 준비 완료를 출력하면 [로컬 프리뷰](http://127.0.0.1:9292)를 Chrome에서 엽니다. 실제 스토어 데이터를 사용하는 연결형 프리뷰이므로, 인증 전에는 열리지 않습니다. 서버 종료는 실행 터미널에서 `Ctrl+C`입니다. 로컬에서 Shop Pay 전환 시 HTTP 401이 관찰됐으므로 결제 검수는 CLI가 출력한 Shopify 직접 프리뷰에서 진행합니다. 직접 프리뷰의 결제 화면 진입은 확인했으며 실제 주문은 생성하지 않았습니다.
+첫 실행 시 브라우저에서 **스토어 소유자 또는 테마 권한이 있는 계정**으로 Shopify CLI에 로그인합니다. CLI가 준비 완료를 출력하면 [로컬 프리뷰](http://127.0.0.1:9292)를 Chrome에서 엽니다. 실제 스토어 데이터를 사용하는 연결형 프리뷰이므로, 인증 전에는 열리지 않습니다. 서버 종료는 실행 터미널에서 `Ctrl+C`입니다. 로컬에서 Shop Pay 전환 시 HTTP 401이 관찰됐으므로 결제 검수는 CLI가 출력한 Shopify 직접 프리뷰에서 진행합니다. 기존 기본 테마 단계에서 직접 프리뷰의 결제 화면 진입을 확인했습니다. 이번 React 변경에서 실제 주문을 생성하지 않았으며, 구매 활성화 후 재검수해야 합니다.
 
 | 명령 | 용도 |
 | --- | --- |
-| `npm run dev` | CLI 개발용 테마 업로드 및 로컬 프리뷰 |
+| `npm run dev` | 최초 Vite 빌드 후 asset watch + Shopify 로컬 프리뷰 |
+| `npm run build` | Shopify에 커밋할 JS/CSS 산출물 생성 |
+| `npm run typecheck` / `npm test` | TypeScript 및 회귀 테스트 |
+| `npm run assets:check` | 재빌드 후 커밋할 산출물과 일치 검사 |
+| `npm run assets:watch` | asset 빌드만 감시 |
 | `npm run dev:sync` | 개발용 테마 편집기 변경을 로컬로 동기화 |
 | `npm run check` | Theme Check, 경고도 실패 처리 |
 | `npm run theme:list` | 실제 스토어 테마 ID와 역할 확인 |
 | `npm run theme:info` | 연결 정보 확인 |
 
-Liquid·CSS·JavaScript를 직접 사용하며 별도 빌드 단계가 없습니다. CLI 4.8.0을 프로젝트 의존성과 lockfile로 고정했습니다. `shopify.theme.toml`의 `development` 환경은 `9uqxpe-qv.myshopify.com`만 지정하며 고정 테마 ID나 공개 옵션을 포함하지 않습니다.
+Liquid 테마를 유지하며 React 19.3.0 + TypeScript + Astryx 0.6.0을 Vite 8.3.0으로 빌드합니다. `src/`를 수정한 뒤 `assets/nara-ui*` 생성물을 함께 커밋합니다. GitHub 연결은 빌드를 수행하지 않습니다. CSS와 청크는 Shopify assets CDN에서 상대 경로로 로드하고, 기존 assets 파일은 지우지 않습니다. 로컬 재로딩은 React DOM 교체 충돌을 피하도록 전체 페이지 새로고침을 사용합니다. CLI 4.8.0을 프로젝트 의존성과 lockfile로 고정했습니다. `shopify.theme.toml`의 `development` 환경은 `9uqxpe-qv.myshopify.com`만 지정하며 고정 테마 ID나 공개 옵션을 포함하지 않습니다.
 
 ## 구성
 
 - 메인: 제품 이미지·이름·가격으로 구성한 목록. 소개 배너 없이 바로 제품을 보여주며, 편집기에서 컬렉션과 페이지당 제품 수를 선택합니다.
 - 상품 목록: 반응형 목록, 정렬, 페이지 나누기, 빈 목록.
-- 상품 상세: 큰 이미지와 한 줄 썸네일, 선택 옵션의 가격·이미지·재고·수량 규칙, 상품 폼과 앱 블록. 옵션 변경 시 `?variant=`로 페이지를 다시 불러옵니다.
+- 상품 상세: 큰 이미지와 한 줄 썸네일, 선택 옵션의 가격·이미지·재고·수량 규칙, 상품 폼과 앱 블록. 옵션 변경은 Section Rendering API로 상태를 갱신하며 URL·수량·이미지를 함께 유지합니다. Astryx Selector, NumberInput, Carousel, Lightbox를 사용합니다. 구매·가격 노출은 운영 설정을 보존해 기본적으로 꺼져 있습니다.
 - 장바구니: 옵션과 속성, 할인, 수량 변경·삭제, 합계, Shopify 결제 진입.
 - 검색: 상품·페이지·글, 빈 결과, 페이지 나누기. 일반 페이지와 404도 포함.
 - 기존 Skeleton의 블로그·글·컬렉션 목록·기프트 카드·비밀번호 템플릿 유지.
 - 로고·장바구니만 있는 헤더, 푸터 없는 화면, 키보드 포커스, 본문 바로가기, canonical·메타·상품 구조화 데이터. Contact 폼·메뉴와 홈 소개 섹션은 포함하지 않습니다.
 - 영어 UI가 기본이며 가격·통화는 Shopify의 현재 마켓 컨텍스트를 따릅니다. 수동 국가·언어 선택 UI와 한국어·일본어 번역은 이번 구성에 포함하지 않습니다.
 
-현재 확인한 상품 규모에 맞춘 기본 구성입니다. 고변형 상품(250개 초과), 구독·번들·각인 같은 별도 판매 기능은 추가 검토가 필요합니다.
+옵션 값 API를 사용해 전체 variant 배열을 전송하지 않습니다. 실제 250개 초과 상품, 구독·번들·각인 기능은 아직 실스토어 검수 대상입니다. 상품 구성 변경과 사진 관리 방법은 [관리자 안내](docs/product-content-guide.md), UI 규칙은 [디자인 기준](docs/design.md), 이번 검증은 [React 검수 기록](docs/react-validation.md)을 참고합니다.
 
 ## GitHub와 테마 연결
 

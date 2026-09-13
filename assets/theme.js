@@ -1,30 +1,20 @@
-// Variant navigation uses Shopify-rendered HTML, so prices, stock, quantity
-// rules, and accelerated checkout all remain in the current market context.
-class NaraProduct extends HTMLElement {
-  connectedCallback() {
-    this.controller?.abort();
-    this.controller = new AbortController();
-    const { signal } = this.controller;
-    this.querySelector('[data-variant-select]')?.addEventListener('change', (event) => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('variant', event.target.value);
-      url.searchParams.delete('option_values');
-      window.location.assign(url);
-    }, { signal });
-    this.querySelectorAll('[data-gallery-image]').forEach((link) => {
-      link.addEventListener('click', (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        const image = this.querySelector('.product-featured-image img');
-        if (!image) return;
-        event.preventDefault();
-        image.removeAttribute('srcset');
-        image.src = link.href;
-        image.alt = link.querySelector('img').alt;
-        this.querySelectorAll('[data-gallery-image]').forEach((item) => item.removeAttribute('aria-current'));
-        link.setAttribute('aria-current', 'true');
-      }, { signal });
-    });
-  }
-  disconnectedCallback() { this.controller?.abort(); }
+// Small independent fallback: React removes this listener once enhancement succeeds.
+// Option IDs stay separate from the variant ID submitted to Shopify.
+function installProductFallback(root) {
+  if (root.dataset.fallbackReady) return;
+  root.dataset.fallbackReady = 'true';
+  root.addEventListener('change', event => {
+    if (root.dataset.enhanced || !event.target.matches('[data-option-position]')) return;
+    const selected = event.target.selectedOptions[0];
+    const url = new URL(selected.dataset.productUrl || window.location.href, window.location.origin);
+    for (const [key, value] of new URLSearchParams(location.search)) if (!['variant', 'option_values', 'section_id'].includes(key)) url.searchParams.set(key, value);
+    const localeRoot = root.dataset.localeRoot || '/';
+    if (localeRoot !== '/' && url.pathname.startsWith('/products/')) url.pathname = localeRoot.replace(/\/$/, '') + url.pathname;
+    url.searchParams.delete('variant');
+    url.searchParams.set('option_values', [...root.querySelectorAll('[data-option-position]')].map(input => input.value).join(','));
+    window.location.assign(url);
+  });
 }
-if (!customElements.get('nara-product')) customElements.define('nara-product', NaraProduct);
+function installFallbacks(scope) { scope.querySelectorAll('[data-product-experience]').forEach(installProductFallback); }
+installFallbacks(document);
+document.addEventListener('shopify:section:load', event => installFallbacks(event.target));

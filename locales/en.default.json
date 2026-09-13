@@ -76,6 +76,26 @@
     "quantity": "Quantity",
     "add_to_cart": "Add to cart",
     "view_image": "View image {{ number }}",
-    "no_script": "Choose an option below to update price and availability."
+    "no_script": "Choose an option below to update price and availability.",
+    "unavailable": "Unavailable combination",
+    "choose_other": "Choose another option combination.",
+    "updating": "Updating…",
+    "request_error": "Could not update this selection.",
+    "retry": "Try again",
+    "open_selection": "Open selected option",
+    "coming_soon": "Coming soon",
+    "previous": "Previous image",
+    "next": "Next image",
+    "gallery": "Product images",
+    "zoom": "Enlarge image",
+    "no_image": "Image coming soon",
+    "image_error": "Image unavailable",
+    "invalid_quantity": "Enter a whole-number quantity.",
+    "option_unavailable": "Currently unavailable",
+    "close": "Close",
+    "zoom_in": "Zoom in",
+    "zoom_out": "Zoom out",
+    "increment": "Increase quantity",
+    "decrement": "Decrease quantity"
   }
 }
