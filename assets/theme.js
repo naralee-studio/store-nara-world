@@ -28,8 +28,3 @@ class NaraProduct extends HTMLElement {
   disconnectedCallback() { this.controller?.abort(); }
 }
 if (!customElements.get('nara-product')) customElements.define('nara-product', NaraProduct);
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape') return;
-  const menu = event.target.closest('.mobile-menu[open], .submenu[open]');
-  if (menu) { menu.open = false; menu.querySelector('summary').focus(); }
-});

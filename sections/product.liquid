@@ -12,7 +12,6 @@
     {% for media in product.media %}{% unless media.media_type == 'image' %}{{ media | media_tag: controls: true }}{% endunless %}{% endfor %}
   </div>
   <div class="product-details">
-    <p class="eyebrow">{{ product.vendor | escape }}</p>
     <h1>{{ product.title | escape }}</h1>
     <p class="product-price" aria-live="polite" data-price>{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>
     {% form 'product', product, id: product_form_id %}

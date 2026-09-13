@@ -12,11 +12,11 @@
 # Ignore templates and sections with a regular expression:
 #   /(templates|sections)/.*\.json/
 
-node_modules/
-.github/
-docs/
-.local/
-artifacts/
+node_modules/**
+.github/**
+docs/**
+.local/**
+artifacts/**
 *.md
 package*.json
 shopify.theme.toml

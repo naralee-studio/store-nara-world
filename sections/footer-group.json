@@ -4,9 +4,7 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "settings": {
-        "menu": "footer"
-      }
+      "settings": {}
     }
   },
   "order": [

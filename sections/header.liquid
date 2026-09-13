@@ -1,43 +1,9 @@
 <header class="site-header">
   <a class="wordmark" href="{{ routes.root_url }}">{{ section.settings.brand | escape }}</a>
-  <nav class="desktop-nav" aria-label="{{ 'general.navigation' | t }}">
-    {% if section.settings.menu.links != blank %}
-      {% for link in section.settings.menu.links %}
-        <div class="nav-item">
-          <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
-          {% if link.links != blank %}
-            <details class="submenu"><summary>{{ 'general.more' | t }}: {{ link.title | escape }}</summary>
-              {% for child in link.links %}<a href="{{ child.url }}">{{ child.title | escape }}</a>
-                {% for grandchild in child.links %}<a href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a>{% endfor %}
-              {% endfor %}
-            </details>
-          {% endif %}
-        </div>
-      {% endfor %}
-    {% else %}
-      <a href="{{ routes.all_products_collection_url }}">{{ 'general.shop' | t }}</a>
-    {% endif %}
-  </nav>
   <div class="header-actions">
-    <a href="{{ routes.search_url }}">{{ 'search.title' | t }}</a>
-    {% if shop.customer_accounts_enabled %}<a class="account-link" href="{{ routes.account_url }}">{{ 'general.account' | t }}</a>{% endif %}
     <a href="{{ routes.cart_url }}">{{ 'cart.title' | t }} <span aria-hidden="true">({{ cart.item_count }})</span><span class="visually-hidden">{{ 'cart.item_count' | t: count: cart.item_count }}</span></a>
-    <details class="mobile-menu">
-      <summary>{{ 'general.menu' | t }}</summary>
-      <nav aria-label="{{ 'general.navigation' | t }}">
-        {% if section.settings.menu.links != blank %}
-          {% for link in section.settings.menu.links %}
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-            {% for child in link.links %}<a class="child-link" href="{{ child.url }}">{{ child.title | escape }}</a>
-              {% for grandchild in child.links %}<a class="child-link" href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a>{% endfor %}
-            {% endfor %}
-          {% endfor %}
-        {% else %}<a href="{{ routes.all_products_collection_url }}">{{ 'general.shop' | t }}</a>{% endif %}
-        {% if shop.customer_accounts_enabled %}<a href="{{ routes.account_url }}">{{ 'general.account' | t }}</a>{% endif %}
-      </nav>
-    </details>
   </div>
 </header>
 {% schema %}
-{"name":"Header","settings":[{"type":"text","id":"brand","label":"Wordmark","default":"nara."},{"type":"link_list","id":"menu","label":"Menu","default":"main-menu"}]}
+{"name":"Header","settings":[{"type":"text","id":"brand","label":"Wordmark","default":"nara."}]}
 {% endschema %}
