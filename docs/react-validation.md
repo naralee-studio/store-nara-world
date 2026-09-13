@@ -86,3 +86,7 @@ React/Astryx asset은 상품·카트(및 테마 편집기)에서만 로드합니
 Shopify 관리자에 `nara.gallery_images`(이미지 파일 목록), `nara.gallery_include_shared`(참/거짓) 정의를 생성했습니다. 실제 상품별 값은 입력하지 않았습니다. 목록을 입력하면 같은 상품 미디어에 존재하는 이미지 ID만 지정 순서로 표시하고, 선택적으로 공통 사진을 덧붙입니다. 비어 있거나 전부 유효하지 않으면 기존 정책으로 돌아갑니다. Liquid 초기 이미지와 React 초기/Section Rendering 데이터가 동일한 갤러리 계산을 사용합니다.
 
 실제 Liquid 갤러리 snippet을 LiquidJS로 렌더링하는 4개 테스트를 추가했습니다. 순서·중복·외부/비이미지 참조 제외·공통 사진 덧붙임·빈 목록 fallback·전체 이미지 정책을 검증해 총 21개 테스트가 통과했습니다. 실스토어의 미지정 variant에서 기존 이미지 3장과 대표 이미지 유지도 확인했습니다. 실제 variant에 사진을 지정한 상태의 관리자→스토어 통합 검수는 사진 선택 후 진행해야 합니다.
+
+## Staging 구매 검수 활성화 (2026-09-14)
+
+사용자 요청으로 미공개 staging의 카트/체크아웃 검수를 위해 기본 상품 템플릿의 `enable_purchase`, `show_price`를 true로 설정했습니다. accelerated checkout은 기존 false를 유지하고 Add to cart → Cart → Shopify checkout 경로를 검수합니다. 상품 설명의 COMING SOON, 상품 데이터·재고·결제 설정은 변경하지 않습니다. **main으로 승격하기 전에 이 템플릿의 구매/가격 노출 설정을 실제 출시 결정과 대조해야 합니다.** 미공개 테마도 실제 스토어의 카트·체크아웃을 사용하며 별도의 테스트 결제 모드를 설정한 것은 아닙니다.
