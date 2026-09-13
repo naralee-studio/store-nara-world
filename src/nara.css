@@ -96,3 +96,17 @@
     height: 62px;
   }
 }
+
+.lightbox-load-status {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: #20201e;
+  color: #fff;
+  font-family: var(--nara-font-body);
+  font-size: 0.875rem;
+  pointer-events: none;
+}

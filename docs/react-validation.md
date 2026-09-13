@@ -76,3 +76,7 @@ React/Astryx asset은 상품·카트(및 테마 편집기)에서만 로드합니
 ## 공식 참고
 
 [Shopify 고변형 상품](https://shopify.dev/docs/storefronts/themes/product-merchandising/variants/support-high-variant-products), [옵션 값](https://shopify.dev/docs/api/liquid/objects/product_option_value), [Section Rendering](https://shopify.dev/docs/api/ajax/section-rendering), [Dawn 갤러리](https://github.com/Shopify/dawn/blob/main/snippets/product-media-gallery.liquid), [Astryx](https://github.com/facebook/astryx). 컴포넌트 API는 설치된 0.6.0의 공개 exports와 타입/소스에서 확인했습니다.
+
+## Lightbox 이미지 전환 보정 (2026-09-14)
+
+고해상도 Lightbox 이미지가 로드되기 전에 배경의 저해상도 이미지가 먼저 바뀌던 문제를 수정했습니다. 두 표시 크기의 이미지 다운로드/디코딩을 마친 뒤 선택을 함께 확정하고, 인접 이미지 1장씩을 미리 준비합니다. 대기 중에는 기존 이미지를 유지하고 Lightbox 안에 로딩 상태를 표시합니다. 실패 시 기존 선택을 유지하며 재시도할 수 있고, 닫기/상품 선택 변경 후 늦은 완료는 무시합니다. 추가한 회귀 테스트 3개를 포함해 총 17개입니다.

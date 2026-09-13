@@ -1,4 +1,13 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
+import { prepareGalleryImage } from "./gallery-images";
 import { Carousel, type CarouselHandle } from "@astryxdesign/core/Carousel";
 import type { Gallery, Media } from "./shopify-product-adapter";
 const Lightbox = lazy(() =>
@@ -43,6 +52,21 @@ export function ProductGallery({
 }) {
   const [open, setOpen] = useState(false),
     [opened, setOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
+  const revision = useRef(0);
+  const galleryKey = JSON.stringify(
+    gallery.mediaIds.map((id) => gallery.mediaById[id]),
+  );
+  useLayoutEffect(() => {
+    revision.current++;
+    setLoading(false);
+    setLoadError(false);
+    return () => {
+      revision.current++;
+    };
+  }, [galleryKey, activeId]);
   const trigger = useRef<HTMLButtonElement>(null),
     rail = useRef<CarouselHandle>(null);
   const index = Math.max(0, gallery.mediaIds.indexOf(activeId ?? ""));
@@ -53,7 +77,35 @@ export function ProductGallery({
   useEffect(() => {
     if (!media) setOpen(false);
   }, [media]);
+  useEffect(() => {
+    if (!open) return;
+    // Only the current image and immediate neighbours, not the whole gallery.
+    for (const i of [index - 1, index, index + 1]) {
+      const next = gallery.mediaById[gallery.mediaIds[i]];
+      if (next) void prepareGalleryImage(next).catch(() => {});
+    }
+  }, [open, index, galleryKey]);
+  async function selectLightbox(i: number) {
+    const next = gallery.mediaById[gallery.mediaIds[i]];
+    if (!next) return;
+    const request = ++revision.current;
+    setLoading(true);
+    setLoadError(false);
+    try {
+      await prepareGalleryImage(next);
+      if (request !== revision.current) return;
+      setLoading(false);
+      onSelect(next.id);
+    } catch {
+      if (request !== revision.current) return;
+      setLoading(false);
+      setLoadError(true);
+    }
+  }
   function changeOpen(value: boolean) {
+    revision.current++;
+    setLoading(false);
+    setLoadError(false);
     setOpen(value);
     if (!value) requestAnimationFrame(() => trigger.current?.focus());
   }
@@ -132,9 +184,20 @@ export function ProductGallery({
           </Carousel>
         </>
       )}
+      {open &&
+        dialog &&
+        (loading || loadError) &&
+        createPortal(
+          <p className="lightbox-load-status" role="status">
+            {loadError ? t.image_error : t.updating}
+          </p>,
+          dialog,
+        )}
       {opened && (
         <Suspense fallback={open ? <p role="status">{t.updating}</p> : null}>
           <Lightbox
+            ref={setDialog}
+            aria-busy={loading}
             className="nara-lightbox"
             isOpen={open}
             onOpenChange={changeOpen}
@@ -143,7 +206,7 @@ export function ProductGallery({
               alt: gallery.mediaById[id].alt,
             }))}
             index={index}
-            onIndexChange={(i) => onSelect(gallery.mediaIds[i])}
+            onIndexChange={(i) => void selectLightbox(i)}
             hasZoom
           />
         </Suspense>
