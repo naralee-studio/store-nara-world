@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "heading": "nara.",
+        "text": "A playful approach to modular living.",
+        "product": "family",
+        "link_label": "Explore family."
+      }
+    },
+    "collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "The collection",
+        "limit": 4
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "collection"
+  ]
+}

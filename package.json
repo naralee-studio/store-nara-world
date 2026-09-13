@@ -1,0 +1,16 @@
+{
+  "name": "store-nara-world",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nara custom Shopify theme, based on the official Shopify Skeleton",
+  "engines": { "node": ">=22.12.0" },
+  "packageManager": "npm@11.17.0",
+  "scripts": {
+    "dev": "shopify theme dev --environment development",
+    "dev:sync": "shopify theme dev --environment development --theme-editor-sync",
+    "check": "shopify theme check --fail-level warning",
+    "theme:list": "shopify theme list --environment development",
+    "theme:info": "shopify theme info --environment development"
+  },
+  "devDependencies": { "@shopify/cli": "4.8.0" }
+}

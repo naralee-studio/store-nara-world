@@ -1,0 +1,32 @@
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="wordmark" href="{{ routes.root_url }}">{{ section.settings.brand | escape }}</a>
+    <nav aria-label="{{ 'general.footer' | t }}">
+      {% for link in section.settings.menu.links %}<a href="{{ link.url }}">{{ link.title | escape }}</a>{% endfor %}
+      {% for policy in shop.policies %}{% if policy.body != blank %}<a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% endif %}{% endfor %}
+    </nav>
+    {% if localization.available_countries.size > 1 or localization.available_languages.size > 1 %}
+      {% form 'localization', class: 'localization-form' %}
+        {% if localization.available_countries.size > 1 %}
+          <label for="Country-{{ section.id }}">{{ 'general.country' | t }}</label>
+          <select name="country_code" id="Country-{{ section.id }}">
+            {% for country in localization.available_countries %}<option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>{{ country.name | escape }} · {{ country.currency.iso_code }}</option>{% endfor %}
+          </select>
+        {% endif %}
+        {% if localization.available_languages.size > 1 %}
+          <label for="Language-{{ section.id }}">{{ 'general.language' | t }}</label>
+          <select name="language_code" id="Language-{{ section.id }}">
+            {% for language in localization.available_languages %}<option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>{{ language.endonym_name | escape }}</option>{% endfor %}
+          </select>
+        {% endif %}
+        <button type="submit" class="button-secondary">{{ 'general.update' | t }}</button>
+      {% endform %}
+    {% endif %}
+  </div>
+  <div class="footer-bottom"><small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</small>
+    {% if section.settings.show_payment_icons %}<ul class="payment-icons" role="list">{% for type in shop.enabled_payment_types %}<li>{{ type | payment_type_svg_tag }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+</footer>
+{% schema %}
+{"name":"Footer","settings":[{"type":"text","id":"brand","label":"Wordmark","default":"nara."},{"type":"link_list","id":"menu","label":"Menu","default":"footer"},{"type":"checkbox","id":"show_payment_icons","label":"Show payment icons","default":true}]}
+{% endschema %}

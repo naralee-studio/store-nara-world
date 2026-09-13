@@ -1,0 +1,4 @@
+# Customer-facing URL: https://store.nara.world
+# Development theme is selected by Shopify CLI; no live/staging theme ID here.
+[environments.development]
+store = "9uqxpe-qv.myshopify.com"

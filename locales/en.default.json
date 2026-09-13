@@ -1,0 +1,81 @@
+{
+  "404": {
+    "title": "404",
+    "not_found": "Page not found.",
+    "back_to_shopping": "Back to shopping"
+  },
+  "blog": {
+    "article_comments": "Comments",
+    "article_metadata_html": "{{ date }} by {{ author }}",
+    "comment_form_body": "Comment",
+    "comment_form_email": "Email",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Post",
+    "comment_form_title": "Add a comment"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "title": "Cart",
+    "update": "Update",
+    "remove": "Remove",
+    "empty": "Your cart is empty.",
+    "subtotal": "Subtotal",
+    "shipping_at_checkout": "Shipping, taxes and discounts calculated at checkout.",
+    "item_count": "{{ count }} items"
+  },
+  "customers": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "title": "Login"
+    }
+  },
+  "collections": {
+    "title": "Collections",
+    "empty": "No products in this collection yet.",
+    "sort": "Sort by"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "card": "Gift card",
+    "expired": "This gift card has expired",
+    "expires_on": "Expires on {{ expires_on }}",
+    "use_at_checkout": "Use this gift card at checkout"
+  },
+  "password": {
+    "title": "This shop is private",
+    "password": "Password",
+    "enter": "Enter"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles, pages, or products",
+    "submit": "Search",
+    "no_results_html": "No results found for {{ terms }}",
+    "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "general": {
+    "skip": "Skip to content",
+    "navigation": "Main navigation",
+    "more": "More",
+    "shop": "Shop",
+    "account": "Account",
+    "menu": "Menu",
+    "footer": "Footer",
+    "country": "Country / region",
+    "language": "Language",
+    "update": "Apply",
+    "view_all": "View all",
+    "continue_shopping": "Continue shopping",
+    "pagination": "Pagination"
+  },
+  "product": {
+    "from": "From",
+    "sold_out": "Sold out",
+    "quantity": "Quantity",
+    "add_to_cart": "Add to cart",
+    "view_image": "View image {{ number }}",
+    "no_script": "Choose an option below to update price and availability."
+  }
+}
