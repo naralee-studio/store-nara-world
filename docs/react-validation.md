@@ -101,3 +101,12 @@ Staging 반영 확인: PR #1을 staging에 병합한 뒤 GitHub 연결 테마의
 - 회귀 테스트 5개 추가, 총 26개 통과. 실제 lazy import 실패를 주입한 ProductExperience 테스트에서 B/수량 5/가격/이미지/구매 가능 상태/URL 유지, 실제 jsdom history API로 A→B→C→뒤로→실패→재시도→앞으로 흐름, 일반 선택 재시도를 검증합니다. Liquid의 실제 JSON 필드와 공유 snippet으로 대표 이미지 우선순위도 검증합니다.
 - 격리된 임시 디렉터리에서 수정 전 `a7dcdbc` 코드에 새 테스트를 적용하면 관련 4개 테스트가 실패합니다. 수정 후에는 전체 26개 테스트, TypeScript, Theme Check 44개 파일, 재빌드 assets 일치 검사가 통과합니다. 기존 vendor chunk 크기 경고는 남아 있습니다.
 - 이번 패치의 오류 주입 검증은 로컬 자동화 기준입니다. 실기기 Safari/Firefox 및 실제 결제 검수를 새로 수행한 결과는 아닙니다.
+
+### 로컬 OCR 결과와 처리 범위
+
+`ocr 1.12.0`으로 수정 전에 `origin/main..origin/staging` (`a7dcdbc`) 리뷰를 시작했습니다. 결과는 22개 항목, 12개 지적(high 1 / medium 7 / low 4)이었습니다. 명령은 종료 코드 0이지만 핵심 React 소스의 2차 리뷰는 시간 초과, 빌드 도구 그룹의 context compaction 요청 하나는 취소됐습니다. 따라서 완전한 OCR 통과 결과로 보지 않습니다. 원문은 로컬 `.local/ocr-before-patch.txt`에 보관합니다.
+
+- Lightbox 전체 UI 초기화(high), popstate 재시도 history 손실(medium)은 이번 패치와 회귀 테스트로 해결했습니다. 대표 이미지 없는 variant 문제는 첨부 검토와 Liquid 회귀 테스트를 기준으로 해결했습니다.
+- `selectedEntity`에 따라 대표 이미지 우선순위를 바꾸라는 제안은 채택하지 않았습니다. 이 필드는 구매 대상 식별이며, 전용 목록 여부와 대표 이미지 우선순위는 Liquid에서 확정합니다. variant 갤러리에서도 실제 대표 이미지를 우선해야 합니다.
+- payment 슬롯의 `DOMParser` → `importNode`가 inline script를 재실행한다는 주장은 현재 jsdom 재현에서 실행 횟수 0으로 확인됐습니다. 이 결과만으로 실브라우저의 가속 결제 동작까지 보장하지는 않으며, 결제 마크업을 임의로 제거하지 않았습니다. 현재 기본 템플릿의 가속 결제 노출은 꺼져 있습니다.
+- Windows npm 실행/경로 관련 세 제안은 Windows 지원 검증 과제로 남깁니다. 이번 작업 환경은 macOS, CI는 Ubuntu이며 Windows에서 재현하지 않았습니다. 필수 DOM 노드 누락 지적은 현재 Liquid 템플릿에 해당 노드가 모두 있으므로 가정적인 다른 템플릿에 대한 보강 제안으로 분류했습니다.
