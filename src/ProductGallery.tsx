@@ -1,4 +1,6 @@
 import {
+  Component,
+  type ReactNode,
   lazy,
   Suspense,
   useEffect,
@@ -15,6 +17,22 @@ const Lightbox = lazy(() =>
     default: module.Lightbox,
   })),
 );
+// An optional viewer must never tear down the product's purchase state.
+class LightboxBoundary extends Component<
+  {
+    children: ReactNode;
+    fallback: ReactNode;
+  },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
 function ResponsiveImage({
   media,
   fallback,
@@ -194,22 +212,38 @@ export function ProductGallery({
           dialog,
         )}
       {opened && (
-        <Suspense fallback={open ? <p role="status">{t.updating}</p> : null}>
-          <Lightbox
-            ref={setDialog}
-            aria-busy={loading}
-            className="nara-lightbox"
-            isOpen={open}
-            onOpenChange={changeOpen}
-            media={gallery.mediaIds.map((id) => ({
-              src: gallery.mediaById[id].zoom,
-              alt: gallery.mediaById[id].alt,
-            }))}
-            index={index}
-            onIndexChange={(i) => void selectLightbox(i)}
-            hasZoom
-          />
-        </Suspense>
+        <LightboxBoundary
+          fallback={
+            open ? (
+              <div role="status">
+                <p>{t.image_error}</p>
+                <a href={media.zoom} target="_blank" rel="noopener noreferrer">
+                  {t.zoom}
+                </a>{" "}
+                <button type="button" onClick={() => changeOpen(false)}>
+                  {t.close}
+                </button>
+              </div>
+            ) : null
+          }
+        >
+          <Suspense fallback={open ? <p role="status">{t.updating}</p> : null}>
+            <Lightbox
+              ref={setDialog}
+              aria-busy={loading}
+              className="nara-lightbox"
+              isOpen={open}
+              onOpenChange={changeOpen}
+              media={gallery.mediaIds.map((id) => ({
+                src: gallery.mediaById[id].zoom,
+                alt: gallery.mediaById[id].alt,
+              }))}
+              index={index}
+              onIndexChange={(i) => void selectLightbox(i)}
+              hasZoom
+            />
+          </Suspense>
+        </LightboxBoundary>
       )}
     </div>
   );
