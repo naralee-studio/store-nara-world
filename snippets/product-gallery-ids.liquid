@@ -3,6 +3,7 @@
   Variant file lists must reference images already in this product's media.
   @param {product} product
   @param {section} section
+  @param {boolean} [featured_only] Return the preferred image ID, or blank.
 {% enddoc %}
 {%- liquid
   assign variant = product.selected_or_first_available_variant
@@ -50,5 +51,22 @@
       endunless
     endfor
   endif
-  echo output_ids
+  if featured_only
+    if mapped_ids != blank
+      assign preferred_ids = mapped_ids | split: '|'
+      for id in preferred_ids
+        unless id == blank
+          echo id
+          break
+        endunless
+      endfor
+    elsif variant.featured_media.media_type == 'image'
+      assign marker = '|' | append: variant.featured_media.id | append: '|'
+      if output_ids contains marker
+        echo variant.featured_media.id
+      endif
+    endif
+  else
+    echo output_ids
+  endif
 -%}

@@ -92,3 +92,12 @@ Shopify 관리자에 `nara.gallery_images`(이미지 파일 목록), `nara.galle
 사용자 요청으로 미공개 staging의 카트/체크아웃 검수를 위해 기본 상품 템플릿의 `enable_purchase`, `show_price`를 true로 설정했습니다. accelerated checkout은 기존 false를 유지하고 Add to cart → Cart → Shopify checkout 경로를 검수합니다. 상품 설명의 COMING SOON, 상품 데이터·재고·결제 설정은 변경하지 않습니다. **main으로 승격하기 전에 이 템플릿의 구매/가격 노출 설정을 실제 출시 결정과 대조해야 합니다.** 미공개 테마도 실제 스토어의 카트·체크아웃을 사용하며 별도의 테스트 결제 모드를 설정한 것은 아닙니다.
 
 Staging 반영 확인: PR #1을 staging에 병합한 뒤 GitHub 연결 테마의 React/Astryx UI 및 구매 설정 반영을 브라우저에서 확인했습니다. 실제 little family 담기 → 카트 수량 1→2 및 €250→€500 합계 변경 → Shopify 체크아웃의 Contact/Delivery/Payment 입력 화면 진입 → 카트로 돌아와 테스트 항목 삭제/빈 카트 복원을 확인했습니다. 개인정보·배송지·카드 입력과 주문 제출은 하지 않았습니다. main과 운영 Dawn의 게시 상태는 변경하지 않았습니다. staging 병합 커밋의 CI도 통과했습니다.
+
+## 오류 복구 패치 (2026-09-14)
+
+- Lightbox의 지연 import/render 오류는 별도 boundary에서 처리합니다. 실패 안내·원본 이미지 새 탭 링크·닫기를 제공하며 현재 variant, 수량, 가격, 갤러리, 구매 폼을 유지합니다. 실패한 모듈의 재시도를 가장하지 않습니다.
+- 옵션 요청의 URL과 history push 여부를 함께 보관합니다. 뒤로/앞으로 이동 중 실패한 요청은 재시도에도 새 history 항목을 만들지 않으며, 일반 옵션 선택의 재시도는 기존처럼 항목을 추가합니다.
+- 갤러리 목록과 대표 이미지 선택을 같은 Liquid snippet에서 계산합니다. 유효한 전용 목록의 첫 이미지 또는 실제 연결된 대표 이미지만 `featuredMediaId`로 내보내고, 둘 다 없으면 null을 반환해 현재 사진 유지 규칙을 적용합니다.
+- 회귀 테스트 5개 추가, 총 26개 통과. 실제 lazy import 실패를 주입한 ProductExperience 테스트에서 B/수량 5/가격/이미지/구매 가능 상태/URL 유지, 실제 jsdom history API로 A→B→C→뒤로→실패→재시도→앞으로 흐름, 일반 선택 재시도를 검증합니다. Liquid의 실제 JSON 필드와 공유 snippet으로 대표 이미지 우선순위도 검증합니다.
+- 격리된 임시 디렉터리에서 수정 전 `a7dcdbc` 코드에 새 테스트를 적용하면 관련 4개 테스트가 실패합니다. 수정 후에는 전체 26개 테스트, TypeScript, Theme Check 44개 파일, 재빌드 assets 일치 검사가 통과합니다. 기존 vendor chunk 크기 경고는 남아 있습니다.
+- 이번 패치의 오류 주입 검증은 로컬 자동화 기준입니다. 실기기 Safari/Firefox 및 실제 결제 검수를 새로 수행한 결과는 아닙니다.

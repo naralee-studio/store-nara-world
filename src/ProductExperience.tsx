@@ -29,7 +29,7 @@ export function ProductExperience({
   const [pending, setPending] = useState(false),
     [error, setError] = useState(false);
   const request = useRef(new ProductRequest()),
-    target = useRef<URL | null>(null),
+    target = useRef<{ url: URL; push: boolean } | null>(null),
     busy = useRef(false);
   const form = root.querySelector<HTMLFormElement>(
     'form[action*="/cart/add"]',
@@ -49,7 +49,7 @@ export function ProductExperience({
     payment.inert = true;
   }
   async function load(url: URL, push: boolean) {
-    target.current = url;
+    target.current = { url, push };
     blockBuying();
     setPending(true);
     setError(false);
@@ -215,12 +215,13 @@ export function ProductExperience({
                 type="button"
                 className="button-secondary"
                 onClick={() =>
-                  target.current && void load(target.current, true)
+                  target.current &&
+                  void load(target.current.url, target.current.push)
                 }
               >
                 {t.retry}
               </button>
-              <a href={target.current?.href}>{t.open_selection}</a>
+              <a href={target.current?.url.href}>{t.open_selection}</a>
             </div>
           )}
           {state.purchaseEnabled && (
