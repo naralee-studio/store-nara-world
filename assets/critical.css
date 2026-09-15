@@ -130,7 +130,7 @@ body { font-family:var(--nara-font-body); }
 @media (max-width:749px) { .wordmark {font-size:3rem;} .product-details h1 {font-size:4rem;} }
 
 /* Store palette and layout, September 2026. */
-:root { --nara-pink:#FF8CD4; --nara-line:var(--nara-red); --nara-image-background:#fff; }
+:root { --nara-pink:#ec9ac8; --nara-line:var(--nara-red); --nara-image-background:#fff; }
 a { text-decoration-color:var(--nara-red); }
 .site-header { min-height:112px; }
 .header-actions { font-family:var(--nara-font-body); font-size:1rem; }
@@ -169,7 +169,6 @@ a { text-decoration-color:var(--nara-red); }
   .product-card-caption { flex-wrap:wrap; gap:.4rem; }
   .product-card-caption p { text-align:left; }
 }
-.purchase-caption { margin:2rem 0 0; text-align:center; font-size:1.5rem; line-height:1.4; }
 
 .accordion-label { display:flex; align-items:center; gap:.6rem; }
 .accordion-check { width:14px; height:14px; flex:0 0 14px; color:var(--nara-red); }
@@ -195,3 +194,18 @@ input, textarea, select { caret-color:var(--color-foreground); }
 .product-share input { width:100%; }
 .product-related { padding-block:1rem 5rem; }
 .product-related > h2 { font-family:var(--nara-font-body); font-size:1.25rem; font-weight:400; line-height:1.4; margin-bottom:2rem; color:var(--color-foreground); }
+
+/* www.nara.world bundle.1772706544.css: --fs-main / --lh-main, .txt-l, .underline. */
+:root { --nara-type-body:20px; --nara-leading-body:1.4; --nara-type-large:20px; --nara-leading-large:1.1; --nara-underline-offset:.08em; --nara-underline-thickness:.1em; }
+@media (min-width:920px) { :root { --nara-type-body:18px; --nara-type-large:36px; } }
+html { font-size:var(--nara-type-body); }
+body { font-size:var(--nara-type-body); line-height:var(--nara-leading-body); -webkit-font-smoothing:antialiased; font-kerning:normal; }
+a { text-underline-offset:var(--nara-underline-offset); text-decoration-thickness:var(--nara-underline-thickness); }
+.product-details .product-description { font-size:var(--nara-type-large); line-height:var(--nara-leading-large); }
+.product-description p { font-family:var(--nara-font-body); font-size:inherit; line-height:inherit; margin-bottom:.45em; }
+.product-accordion summary, .accordion-content { font-size:var(--nara-type-body); line-height:var(--nara-leading-body); }
+.accordion-content p { font-family:var(--nara-font-body); font-size:inherit; line-height:inherit; margin-bottom:.45em; }
+.cart-page p { line-height:var(--nara-leading-body); }
+.product-share summary { text-underline-offset:var(--nara-underline-offset); text-decoration-thickness:var(--nara-underline-thickness); }
+.product-fallback .add-to-cart, .product-fallback .buy-now { background:transparent; border:0; color:var(--color-foreground); font-size:var(--nara-type-large); line-height:var(--nara-leading-large); }
+.product-fallback .add-to-cart:hover, .product-fallback .buy-now:hover { text-decoration:underline; text-decoration-color:var(--nara-red); text-underline-offset:var(--nara-underline-offset); text-decoration-thickness:var(--nara-underline-thickness); }

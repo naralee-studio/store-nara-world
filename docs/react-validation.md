@@ -120,3 +120,11 @@ Cart typography is explicit in the shared CSS: it no longer depends on an Astryx
 Validation: 28 tests, TypeScript, deterministic asset rebuild, and Theme Check (46 files) passed. Browser checks covered variant selection, restored detail expansion, 1440px desktop and 390px mobile layouts, home/collection products, filled cart controls and the corrected empty cart. Store policy text was migrated rather than rewritten; live publication is not part of this change.
 
 Local OCR 1.12.0 attempted the scoped design diff (9 selected files, low effort). It reported zero findings, but 5 of 9 items failed due to timeouts: CSS review planning and theme JSON/config review. This is a partial review, not a clean OCR pass. Generated bundles and content documents were excluded; Liquid files were separately checked by Shopify Theme Check and browser rendering. Report: `.local/ocr-pink-layout.txt` (local only).
+
+## 2026-09-15 — brand typography and purchase actions
+
+Primary pink changed to #ec9ac8. The local brand reference supplies responsive body/large type, line heights and underline geometry (see brand-assets.md). At 1440px, computed body is 18px/25.2px and product description/actions 36px/39.6px; at 390px body/description are 20px. Neither viewport has horizontal document overflow.
+
+Both React and Liquid fallback offer native product form submitters: add to the family adds to cart; i’d like to order now adds the same selected variant/quantity with localized return_to=/checkout. Existing cart items remain included. Four added regressions cover submitter serialization after variant/quantity changes, localized checkout and failed/pending options, unblurred quantity normalization, and invalid drafts blocking checkout. All 37 tests, TypeScript, asset reproducibility and Theme Check (48 files) pass.
+
+Local browser keyboard activation confirmed the add action arrives at Cart with the selected product; checkout activation adds the product and reaches Shopify's Shop Pay redirect, where the localhost proxy returns an HTTP error. Test-added little family items were removed, restoring the pre-existing family side-table quantity of two. Hosted staging checkout verification follows deployment; no payment is submitted.

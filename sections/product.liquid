@@ -53,8 +53,8 @@
           <input type="hidden" name="id" value="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
           <label for="Quantity-{{ section.id }}">{{ 'product.quantity' | t }}</label>
           <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="{{ current_variant.quantity_rule.min | default: 1 }}" step="{{ current_variant.quantity_rule.increment | default: 1 }}" {% if current_variant.quantity_rule.max %}max="{{ current_variant.quantity_rule.max }}"{% endif %} value="{{ current_variant.quantity_rule.min | default: 1 }}" required>
-          <p class="purchase-caption">{{ 'product.purchase_caption' | t }}</p>
           <button type="submit" name="add" class="add-to-cart" {% unless current_variant.available %}disabled{% endunless %}>{% if current_variant == blank %}{{ 'product.unavailable' | t }}{% elsif current_variant.available %}{{ 'product.add_to_cart' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</button>
+          <button type="submit" name="return_to" value="{{ routes.root_url }}checkout" class="buy-now" {% unless current_variant.available %}disabled{% endunless %}>{{ 'product.buy_now' | t }}</button>
         {% endif %}
       </fieldset>
       <div data-input-mount></div>

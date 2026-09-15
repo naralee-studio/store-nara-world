@@ -29,6 +29,7 @@ function setup() {
           invalidMessage="Enter a whole number"
         />
         <button type="submit">Add</button>
+        <button type="submit" name="return_to" value="/checkout">Checkout</button>
       </>
     );
   }
@@ -63,4 +64,25 @@ it("blocks malformed draft instead of silently sending the previous quantity", (
   fireEvent.keyDown(input, { key: "Enter" });
   expect(sent).toEqual([]);
   expect(screen.getByText("Enter a whole number")).toBeTruthy();
+});
+
+it("validates and normalizes the latest draft for the checkout submitter", () => {
+  const { form, sent } = setup();
+  const destinations: Array<string | null> = [];
+  form.addEventListener("submit", event => {
+    destinations.push((event as SubmitEvent).submitter?.getAttribute("value") ?? null);
+  });
+  const input = screen.getByRole("spinbutton");
+  fireEvent.focus(input);
+  fireEvent.change(input, {target:{value:"7"}});
+  fireEvent.click(screen.getByRole("button", {name:"Checkout"}));
+  expect(sent).toEqual([["8"]]);
+  expect(destinations).toEqual(["/checkout"]);
+});
+it("blocks checkout on an invalid quantity draft", () => {
+  const { sent } = setup();
+  fireEvent.focus(screen.getByRole("spinbutton"));
+  fireEvent.change(screen.getByRole("spinbutton"), {target:{value:"7x"}});
+  fireEvent.click(screen.getByRole("button", {name:"Checkout"}));
+  expect(sent).toEqual([]);
 });

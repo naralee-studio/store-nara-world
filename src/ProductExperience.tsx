@@ -242,7 +242,6 @@ export function ProductExperience({
                 invalidMessage={t.invalid_quantity}
                 disabled={!canBuy}
               />
-              <p className="purchase-caption">{t.purchase_caption}</p>
               <button
                 type="submit"
                 name="add"
@@ -254,6 +253,15 @@ export function ProductExperience({
                   : state.variant.available
                     ? t.add_to_cart
                     : t.sold_out}
+              </button>
+              <button
+                type="submit"
+                name="return_to"
+                value={`${state.localeRoot ?? "/"}checkout`}
+                className="buy-now"
+                disabled={!canBuy}
+              >
+                {t.buy_now}
               </button>
             </>
           )}
