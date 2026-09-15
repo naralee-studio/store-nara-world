@@ -189,3 +189,9 @@ input, textarea, select { caret-color:var(--color-foreground); }
 .cart-empty { border-top:1px solid var(--nara-red); margin-top:2.5rem; padding-block:2.5rem; min-height:18rem; justify-content:flex-start; gap:1.5rem; }
 .cart-empty p { font-size:1rem; }
 .cart-page button, .cart-empty .button { font-family:var(--nara-font-body); font-size:1rem; line-height:1.5; font-weight:400; }
+.product-share { margin-top:2rem; color:var(--color-foreground); font-family:var(--nara-font-body); }
+.product-share summary { cursor:pointer; text-decoration:underline; text-decoration-color:var(--nara-red); text-underline-offset:.25em; }
+.product-share label { margin-top:1rem; }
+.product-share input { width:100%; }
+.product-related { padding-block:1rem 5rem; }
+.product-related > h2 { font-family:var(--nara-font-body); font-size:1.25rem; font-weight:400; line-height:1.4; margin-bottom:2rem; color:var(--color-foreground); }

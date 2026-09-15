@@ -66,11 +66,19 @@
         {% if section.settings.show_dynamic_checkout and section.settings.enable_purchase %}{{ form | payment_button }}{% endif %}
       </div>
     {% endform %}
+    {% if section.settings.show_share %}
+      <details class="product-share">
+        <summary>{{ 'product.share' | t }}</summary>
+        <label for="Share-{{ section.id }}">{{ 'product.share_link' | t }}</label>
+        <input id="Share-{{ section.id }}" type="url" readonly value="{{ canonical_url | escape }}">
+      </details>
+    {% endif %}
     {% for block in section.blocks %}{% if block.type == '@app' %}{% render block %}{% endif %}{% endfor %}
   </div>
   <div data-product-root></div>
   {% render 'product-state', product: product, section: section %}
 </div>
+{% if section.settings.show_related %}{% render 'product-related', product: product, section: section %}{% endif %}
 {% schema %}
 {
   "name": "Product",
@@ -118,10 +126,16 @@
       "info": "Place this option value on its own row. Matches without case sensitivity."
     },
     {
-      "type": "product",
-      "id": "accordion_product",
-      "label": "Product for detail content",
-      "info": "Leave empty to show detail blocks on all products using this template."
+      "type": "checkbox",
+      "id": "show_share",
+      "label": "Show product link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Show other products",
+      "default": true
     }
   ],
   "blocks": [
@@ -132,6 +146,28 @@
       "type": "accordion",
       "name": "Detail accordion",
       "settings": [
+        {
+          "type": "select",
+          "id": "scope",
+          "label": "Content scope",
+          "options": [
+            {
+              "value": "all",
+              "label": "Shared by all products"
+            },
+            {
+              "value": "product",
+              "label": "Selected product only"
+            }
+          ],
+          "default": "all"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Only for product",
+          "info": "Required for selected-product content. An empty or deleted selection hides the block."
+        },
         {
           "type": "text",
           "id": "heading",

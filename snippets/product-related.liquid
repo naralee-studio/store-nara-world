@@ -1,0 +1,21 @@
+{% doc %}
+  Crawlable links to other catalog products, without client-side loading.
+  @param {product} product
+  @param {section} section
+{% enddoc %}
+{% capture cards %}
+  {% assign shown = 0 %}
+  {% for other_product in collections.all.products %}
+    {% unless other_product.id == product.id %}
+      {% render 'product-card', product: other_product %}
+      {% assign shown = shown | plus: 1 %}
+      {% if shown == 2 %}{% break %}{% endif %}
+    {% endunless %}
+  {% endfor %}
+{% endcapture %}
+{% if cards != blank %}
+  <section class="product-related" aria-labelledby="Related-{{ section.id }}">
+    <h2 id="Related-{{ section.id }}">{{ 'product.related' | t }}</h2>
+    <div class="product-grid">{{ cards }}</div>
+  </section>
+{% endif %}

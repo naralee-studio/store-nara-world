@@ -1,0 +1,63 @@
+{% doc %}
+  Brand identity shared with nara.world, with separate storefront page IDs.
+  @param {string} description
+{% enddoc %}
+{% unless request.page_type == 'cart' or request.page_type == 'search' or request.page_type == 'password' or request.page_type == '404' %}
+  {% liquid
+    assign brand_url = settings.organization_url | default: 'https://nara.world/'
+    assign organization_id = brand_url | append: '#organization'
+    assign website_id = shop.url | append: '/#website'
+    assign website_url = shop.url | append: routes.root_url
+    assign page_id = canonical_url | append: '#webpage'
+    assign breadcrumb_id = canonical_url | append: '#breadcrumb'
+    assign catalog_url = shop.url | append: routes.all_products_collection_url
+    assign page_type = 'WebPage'
+    if request.page_type == 'collection' or request.page_type == 'list-collections'
+      assign page_type = 'CollectionPage'
+    endif
+  %}
+  {% capture graph %}
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization", "@id": {{ organization_id | json }},
+        "name": {{ shop.name | json }}, "url": {{ brand_url | json }}
+        {% if settings.support_email != blank %}, "email": {{ settings.support_email | json }},
+        "contactPoint": [{"@type":"ContactPoint","contactType":"customer support","email":{{ settings.support_email | json }}}]{% endif %}
+      },
+      {
+        "@type":"WebSite", "@id":{{ website_id | json }},
+        "url":{{ website_url | json }}, "name":{{ shop.name | json }},
+        "inLanguage":{{ request.locale.iso_code | json }},
+        "publisher":{"@id":{{ organization_id | json }}}
+      },
+      {
+        "@type":{{ page_type | json }}, "@id":{{ page_id | json }}, "url":{{ canonical_url | json }},
+        "name":{{ page_title | json }}, "description":{{ description | json }},
+        "inLanguage":{{ request.locale.iso_code | json }},
+        "isPartOf":{"@id":{{ website_id | json }}}, "about":{"@id":{{ organization_id | json }}}
+        {% if request.page_type == 'product' %}, "mainEntity":{"@id":{{ canonical_url | append: '#product' | json }}}{% endif %}
+        {% if request.page_type == 'product' or request.page_type == 'collection' %}, "breadcrumb":{"@id":{{ breadcrumb_id | json }}}{% endif %}
+        {% if page_image %}, "primaryImageOfPage":{{ page_image | image_url: width: 1600 | prepend: 'https:' | json }}{% endif %}
+      }
+      {% if request.page_type == 'product' or request.page_type == 'collection' %},
+      {
+        "@type":"BreadcrumbList", "@id":{{ breadcrumb_id | json }},
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":{{ 'general.home' | t | json }},"item":{{ website_url | json }}},
+          {% if request.page_type == 'product' %}
+          {"@type":"ListItem","position":2,"name":{{ 'collections.title' | t | json }},"item":{{ catalog_url | json }}},
+          {"@type":"ListItem","position":3,"name":{{ product.title | json }},"item":{{ canonical_url | json }}}
+          {% else %}
+          {"@type":"ListItem","position":2,"name":{{ collection.title | json }},"item":{{ canonical_url | json }}}
+          {% endif %}
+        ]
+      }
+      {% endif %}
+    ]
+  }
+  {% endcapture %}
+  {% capture json_lt %}\u003c{% endcapture %}
+  <script type="application/ld+json">{{ graph | replace: '<', json_lt }}</script>
+{% endunless %}

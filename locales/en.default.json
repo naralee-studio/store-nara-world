@@ -68,7 +68,8 @@
     "update": "Apply",
     "view_all": "View all",
     "continue_shopping": "Continue shopping",
-    "pagination": "Pagination"
+    "pagination": "Pagination",
+    "home": "Home"
   },
   "product": {
     "from": "From",
@@ -97,6 +98,9 @@
     "zoom_out": "Zoom out",
     "increment": "Increase quantity",
     "decrement": "Decrease quantity",
-    "purchase_caption": "add to the family"
+    "purchase_caption": "add to the family",
+    "share": "Share",
+    "share_link": "Product link",
+    "related": "You may also like"
   }
 }

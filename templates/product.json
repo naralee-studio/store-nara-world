@@ -7,23 +7,28 @@
         "show_price": true,
         "show_dynamic_checkout": false,
         "standalone_option_value": "Full set",
-        "accordion_product": "family"
+        "show_share": true,
+        "show_related": true
       },
       "blocks": {
         "collapsible_tab_gTGHik": {
           "type": "accordion",
           "settings": {
             "heading": "Dimensions",
-            "content": "<p></p><ul><li>Sofa: 143.5 x 188.5 x 66 cm</li><li>Armchair (yellow / pink): 73 x 50 x 75 cm</li><li>Side table: 105 x 77 x 35 cm</li><li>Coffee table: \u00d845 (top) / \u00d834 (base) x H35.4 cm</li><li>Footrest: \u00d845 cm</li></ul>",
-            "page": ""
+            "content": "<p></p><ul><li>Sofa: 143.5 x 188.5 x 66 cm</li><li>Armchair (yellow / pink): 73 x 50 x 75 cm</li><li>Side table: 105 x 77 x 35 cm</li><li>Coffee table: Ø45 (top) / Ø34 (base) x H35.4 cm</li><li>Footrest: Ø45 cm</li></ul>",
+            "page": "",
+            "product": "family",
+            "scope": "product"
           }
         },
         "collapsible_tab_G3QL4V": {
           "type": "accordion",
           "settings": {
             "heading": "Materials",
-            "content": "<p><strong>cover:</strong> textiles by Kvadrat</p><ul><li>Sofa: 90% wool\u00a010% nylon, textile made in UK</li><li>Armchair (yellow): 90% wool\u00a010% nylon, textile made in UK</li><li>Armchair (pink): 94% wool\u00a06% nylon, textile made in Norway</li><li>Side table: 96% new wool / 4% nylon, textile made in UK</li><li>Coffee table: 90% wool\u00a010% nylon, textile made in UK</li><li>Footrest: 90% wool\u00a010% nylon, textile made in UK</li></ul><p>sofa: 90% wool\u00a010% nylon, textile made in UK</p><p><strong>foam: </strong>High-density polyurethane foam core, foam made in South Korea</p>",
-            "page": ""
+            "content": "<p><strong>cover:</strong> textiles by Kvadrat</p><ul><li>Sofa: 90% wool 10% nylon, textile made in UK</li><li>Armchair (yellow): 90% wool 10% nylon, textile made in UK</li><li>Armchair (pink): 94% wool 6% nylon, textile made in Norway</li><li>Side table: 96% new wool / 4% nylon, textile made in UK</li><li>Coffee table: 90% wool 10% nylon, textile made in UK</li><li>Footrest: 90% wool 10% nylon, textile made in UK</li></ul><p>sofa: 90% wool 10% nylon, textile made in UK</p><p><strong>foam: </strong>High-density polyurethane foam core, foam made in South Korea</p>",
+            "page": "",
+            "product": "family",
+            "scope": "product"
           }
         },
         "collapsible_tab_Pqbmta": {
@@ -31,23 +36,64 @@
           "settings": {
             "heading": "Weight",
             "content": "<p><strong>Weight</strong></p><ul><li>Full set: 65 kg</li><li>Sofa: 25kg</li><li>Armchair (yellow / pink): 7kg</li><li>Side table: 9kg</li><li>Coffee table: 2kg</li><li>Footrest: 2kg</li></ul><p></p>",
-            "page": ""
+            "page": "",
+            "product": "family",
+            "scope": "product"
           }
         },
         "collapsible_tab_GRtcqw": {
           "type": "accordion",
           "settings": {
             "heading": "Shipping & Returns",
-            "content": "<p><em><strong>Shipping</strong></em><br/>Lead time: approximately 4 months from order confirmation.<br/><br/>International shipping is available. Shipping rates are calculated based on the destination.</p><p><em><strong>Returns & Cancellations</strong></em><br/>As each item is made to order, please review your selection carefully before checkout.</p><ul><li>You have the right to withdraw from your order within 14 days of delivery, in accordance with EU/French consumer law.</li><li>If you wish to return your order after delivery, return shipping costs are the customer's responsibility, and the item must be returned unused and in its original packaging.</li><li>If your item arrives damaged or defective, we cover the full cost of return, repair, or replacement \u2014 at no charge to you.</li></ul><p>Questions about your order? Contact us at contact@nara.world</p>",
-            "page": ""
+            "content": "<p><em><strong>Shipping</strong></em><br/>International shipping is available. Shipping rates are calculated based on the destination.</p><p><em><strong>Returns & Cancellations</strong></em><br/>Please review your selection carefully before checkout.</p><ul><li>You have the right to withdraw from your order within 14 days of delivery, in accordance with EU/French consumer law.</li><li>If you wish to return your order after delivery, return shipping costs are the customer's responsibility, and the item must be returned unused and in its original packaging.</li><li>If your item arrives damaged or defective, we cover the full cost of return, repair, or replacement — at no charge to you.</li></ul><p>Questions about your order? Contact us at contact@nara.world</p>",
+            "page": "",
+            "scope": "all"
           }
         },
         "collapsible_tab_WazTXi": {
           "type": "accordion",
           "settings": {
             "heading": "FAQ",
-            "content": "<p><em><strong>Q: How do I clean the cover?</strong></em></p><p>Each piece features a concealed zipper, allowing the cover to be fully removed for cleaning. <strong>Dry clean only</strong> to preserve the fabric\u2019s shape and quality.</p><p></p><p><em><strong>Q: Does it require assembly?</strong></em><strong> </strong></p><p>No assembly needed. Each piece is made entirely of foam, with no wood or hard framing inside \u2014 simply unpack and it's ready to use right away.</p><p></p><p><em><strong>Q: Can I purchase individual pieces instead of the full set?</strong></em><strong> </strong></p><p>Yes. Each piece \u2014 sofa, armchair, coffee table, side table, and footrest \u2014 is available for individual purchase. Simply select the item you'd like from the options above.</p><p><br/><em><strong>Q: Where is FAMILY made? </strong></em></p><p>Designed in Paris, family is made in South Korea by a specialist furniture atelier and upholstered in Kvadrat textiles made in the UK and Norway.</p>",
-            "page": ""
+            "content": "<p><em><strong>Q: How do I clean the cover?</strong></em></p><p>Each piece features a concealed zipper, allowing the cover to be fully removed for cleaning. <strong>Dry clean only</strong> to preserve the fabric’s shape and quality.</p><p></p><p><em><strong>Q: Does it require assembly?</strong></em><strong> </strong></p><p>No assembly needed. Each piece is made entirely of foam, with no wood or hard framing inside — simply unpack and it's ready to use right away.</p><p></p><p><em><strong>Q: Can I purchase individual pieces instead of the full set?</strong></em><strong> </strong></p><p>Yes. Each piece — sofa, armchair, coffee table, side table, and footrest — is available for individual purchase. Simply select the item you'd like from the options above.</p><p><br/><em><strong>Q: Where is FAMILY made? </strong></em></p><p>Designed in Paris, family is made in South Korea by a specialist furniture atelier and upholstered in Kvadrat textiles made in the UK and Norway.</p>",
+            "page": "",
+            "product": "family",
+            "scope": "product"
+          }
+        },
+        "little_dimensions": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Dimensions",
+            "content": "<p>32 cm × 24 cm × 4 cm.</p>",
+            "product": "little-family-by-nara",
+            "scope": "product"
+          }
+        },
+        "little_weight": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Weight",
+            "content": "<p>1.8 kilogrammes.</p>",
+            "product": "little-family-by-nara",
+            "scope": "product"
+          }
+        },
+        "family_lead_time": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Production & Delivery",
+            "content": "<p>Lead time: approximately 4 months from order confirmation.</p><p>As each item is made to order, please review your selection carefully before checkout.</p>",
+            "product": "family",
+            "scope": "product"
+          }
+        },
+        "little_faq": {
+          "type": "accordion",
+          "settings": {
+            "heading": "FAQ",
+            "content": "<p><strong>Is little family a limited edition?</strong></p><p>Edition of 99. Each set contains fourteen modulable miniature pieces echoing the furniture line FAMILY.</p><p><strong>Where is little family made?</strong></p><p>Hand crafted in South Korea.</p>",
+            "product": "little-family-by-nara",
+            "scope": "product"
           }
         }
       },
@@ -55,8 +101,12 @@
         "collapsible_tab_gTGHik",
         "collapsible_tab_G3QL4V",
         "collapsible_tab_Pqbmta",
+        "little_dimensions",
+        "little_weight",
+        "family_lead_time",
         "collapsible_tab_GRtcqw",
-        "collapsible_tab_WazTXi"
+        "collapsible_tab_WazTXi",
+        "little_faq"
       ]
     }
   },
