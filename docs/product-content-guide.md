@@ -73,4 +73,21 @@ Product 섹션의 **Separate option badge**에 입력한 옵션 값(기본 `Full
 
 기존 Dawn의 아코디언은 상품 데이터가 아닌 해당 테마의 `templates/product.json` 블록 설정에 저장돼 있었습니다. 최신 운영 테마에서 Dimensions / Materials / Weight / Shipping & Returns / FAQ 내용을 읽어 커스텀 테마의 **Detail accordion** 블록으로 옮겼습니다. Shopify 테마 편집기 → Products → Default product → Product에서 제목, 본문, 연결 페이지, 순서를 수정할 수 있습니다.
 
-현재 복원한 내용은 family 제품 치수와 소재를 포함하므로 **Product for detail content**를 `family`로 지정했습니다. 다른 상품에는 이 내용을 표시하지 않습니다. 상품별 내용이 필요하면 별도 상품 템플릿에 Detail accordion 블록을 구성하거나 상품 메타필드를 동적 소스로 연결하세요. 적용 상품을 비우면 해당 템플릿을 쓰는 모든 상품에 표시됩니다. 기존 본문을 옮겼으며 배송/반품 조건을 새로 작성하지 않았습니다.
+각 Detail accordion 블록의 **Content scope**에서 공통/특정 상품을 선택합니다. 특정 상품은 **Only for product**로 지정하며, 선택이 없거나 상품이 삭제되면 블록을 숨깁니다. 본문에는 상품 메타필드를 동적 소스로 연결할 수도 있습니다. 현재는 Dawn 내용을 검증해 테마 블록으로 이전했으며, 상품 메타필드 정의·값의 일괄 생성은 아직 하지 않았습니다.
+
+
+## little family와 공통 콘텐츠 (2026-09-15)
+
+현재 Dawn의 기본 템플릿은 little family에도 가구용 치수/소재/65kg/4개월 제작 안내/커버 FAQ를 표시하고 있었습니다. little family 본문에서 확인된 32×24×4cm, 1.8kg, 14개 미니어처, 99개 한정, 한국 수제작 정보만 해당 상품 블록과 FAQ에 사용했습니다. 소재·관리법·발송 기간은 소유자 확인 후 추가합니다.
+
+Shipping & Returns의 국제배송/배송지에 따른 요금/반품·결함 대응·연락처는 공통 블록으로 분리했습니다. 4개월 제작 기간과 주문 제작 문구는 family의 Production & Delivery에만 표시합니다. family의 기존 설명 중 washable 문구와 FAQ의 dry-clean-only 문구는 여전히 서로 달라 상품 설명 관리자가 확인해야 합니다.
+
+Share는 복사할 수 있는 상품 URL을 표시하는 기본 링크 공유 UI입니다. 다른 상품 링크는 서버 HTML에서 렌더링하며, Shopify의 개인화 추천 API를 재현한 것은 아닙니다. 둘 다 Product 섹션 설정에서 숨길 수 있습니다.
+
+## 검색 메타데이터
+
+- 상품 JSON-LD는 Shopify `structured_data` 필터로 한 번 출력합니다. little family는 Product/Offer, family는 ProductGroup과 각 variant Offer를 사용합니다. 임의의 평점·GTIN·배송 요금은 추가하지 않습니다.
+- nara.world의 Organization ID를 공유하고 스토어는 별도 WebSite/Page ID를 사용합니다. Brand structured data 설정에서 브랜드 URL과 공개 이메일을 관리합니다. CollectionPage와 BreadcrumbList는 스토어 URL로 생성하고, 브랜드 사이트에만 있는 영상 스키마는 복사하지 않습니다.
+- FAQ는 서버 HTML에 제공합니다. Google은 2026년 5월 FAQ 리치 결과 표시를 중단했습니다. https://developers.google.com/search/updates
+- 배포 검증: `node scripts/check-product-seo.mjs http://127.0.0.1:9292 /products/little-family-by-nara /products/family`로 JSON 파싱, canonical, Offer, 가격/통화, 스키마 연결과 아코디언 적용 범위를 확인합니다. Google Rich Results Test나 실제 검색 노출 보장과는 별개입니다.
+- 테마 개발 서버가 새 schema와 template을 동시에 올리면 새 설정값이 유실될 수 있습니다. 실제 HTML에서 적용 범위를 확인하고 필요하면 section/schema를 먼저 올린 다음 template/settings를 다시 동기화합니다.

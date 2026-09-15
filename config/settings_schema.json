@@ -79,5 +79,21 @@
         "default": 0
       }
     ]
+  },
+  {
+    "name": "Brand structured data",
+    "settings": [
+      {
+        "type": "url",
+        "id": "organization_url",
+        "label": "Brand website",
+        "info": "The brand identity used by nara.world. Keep a trailing slash for a stable organization ID."
+      },
+      {
+        "type": "text",
+        "id": "support_email",
+        "label": "Public support email"
+      }
+    ]
   }
 ]

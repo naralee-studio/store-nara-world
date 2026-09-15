@@ -3,10 +3,10 @@
   @param {product} product
   @param {section} section
 {% enddoc %}
-{% if section.settings.accordion_product == blank or section.settings.accordion_product.id == product.id %}
   <div class="product-accordions">
     {% for block in section.blocks %}
       {% if block.type == 'accordion' and block.settings.heading != blank %}
+        {% if block.settings.scope == 'product' %}{% if block.settings.product == blank or block.settings.product.id != product.id %}{% continue %}{% endif %}{% endif %}
         {% if block.settings.content != blank or block.settings.page.content != blank %}
           <details class="product-accordion" {{ block.shopify_attributes }}>
             <summary><span class="accordion-label"><svg class="accordion-check" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx=".5" stroke="currentColor"/><path d="m4 8 2.5 2.5L12 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ block.settings.heading | escape }}</span></span><span class="accordion-indicator" aria-hidden="true">+</span></summary>
@@ -16,4 +16,3 @@
       {% endif %}
     {% endfor %}
   </div>
-{% endif %}

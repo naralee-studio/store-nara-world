@@ -1,6 +1,8 @@
 {
   "current": {
     "foreground_color": "#FF8CD4",
-    "min_page_margin": 40
+    "min_page_margin": 40,
+    "organization_url": "https://nara.world/",
+    "support_email": "contact@nara.world"
   }
 }
