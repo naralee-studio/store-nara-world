@@ -110,3 +110,13 @@ Staging 반영 확인: PR #1을 staging에 병합한 뒤 GitHub 연결 테마의
 - `selectedEntity`에 따라 대표 이미지 우선순위를 바꾸라는 제안은 채택하지 않았습니다. 이 필드는 구매 대상 식별이며, 전용 목록 여부와 대표 이미지 우선순위는 Liquid에서 확정합니다. variant 갤러리에서도 실제 대표 이미지를 우선해야 합니다.
 - payment 슬롯의 `DOMParser` → `importNode`가 inline script를 재실행한다는 주장은 현재 jsdom 재현에서 실행 횟수 0으로 확인됐습니다. 이 결과만으로 실브라우저의 가속 결제 동작까지 보장하지는 않으며, 결제 마크업을 임의로 제거하지 않았습니다. 현재 기본 템플릿의 가속 결제 노출은 꺼져 있습니다.
 - Windows npm 실행/경로 관련 세 제안은 Windows 지원 검증 과제로 남깁니다. 이번 작업 환경은 macOS, CI는 Ubuntu이며 Windows에서 재현하지 않았습니다. 필수 DOM 노드 누락 지적은 현재 Liquid 템플릿에 해당 노드가 모두 있으므로 가정적인 다른 템플릿에 대한 보강 제안으로 분류했습니다.
+
+## Pink store layout (2026-09-15)
+
+Applied pink text (#FF8CD4), red structural accents, compact configurable standalone option badges, a sticky desktop gallery, and a shared minimal home/collection grid. Restored five editable detail blocks from the current Dawn template, scoped to family. The purchase caption is “add to the family”; “i’d like to order now” submits the existing add-to-cart form.
+
+Cart typography is explicit in the shared CSS: it no longer depends on an Astryx quantity root activating theme-wide prose defaults. The empty state uses the same pink copy, red rule and outlined action styling.
+
+Validation: 28 tests, TypeScript, deterministic asset rebuild, and Theme Check (46 files) passed. Browser checks covered variant selection, restored detail expansion, 1440px desktop and 390px mobile layouts, home/collection products, filled cart controls and the corrected empty cart. Store policy text was migrated rather than rewritten; live publication is not part of this change.
+
+Local OCR 1.12.0 reviewed the scoped design diff (9 selected files, low effort) with zero findings and no reported failed review rounds. Generated bundles and content documents were excluded; Liquid files were separately checked by Shopify Theme Check and browser rendering. Report: `.local/ocr-pink-layout.txt` (local only).

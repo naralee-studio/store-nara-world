@@ -1,0 +1,15 @@
+{% doc %}
+  Minimal catalog shared by the home and collection pages.
+  @param {collection} collection
+  @param {number} limit
+{% enddoc %}
+{% paginate collection.products by limit %}
+  <div class="product-grid">
+    {% for product in collection.products %}
+      {% render 'product-card', product: product %}
+    {% else %}
+      <p>{{ 'collections.empty' | t }}</p>
+    {% endfor %}
+  </div>
+  {% if paginate.pages > 1 %}<nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>{% endif %}
+{% endpaginate %}

@@ -27,6 +27,7 @@ export interface Option {
     id: string;
     name: string;
     selected: boolean;
+    standalone?: boolean;
     available: boolean;
     productUrl: string | null;
   }[];
