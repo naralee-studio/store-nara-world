@@ -9,21 +9,6 @@ import {
 } from "@testing-library/react";
 import { ProductExperience } from "../src/ProductExperience";
 import type { ProductState } from "../src/shopify-product-adapter";
-vi.mock("@astryxdesign/core/Selector", () => ({
-  Selector: ({ label, value, options, onChange }: any) => (
-    <select
-      aria-label={label}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    >
-      {options.map((o: any) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
-  ),
-}));
 vi.mock("@astryxdesign/core/Carousel", () => ({
   Carousel: ({ children }: any) => <div>{children}</div>,
 }));
@@ -108,13 +93,13 @@ function setup() {
   history.replaceState({}, "", "/products/p?variant=a");
   const root = document.createElement("div");
   root.innerHTML =
-    '<div data-gallery-fallback></div><div data-gallery-mount></div><div data-price-fallback></div><div data-price-mount></div><form action="/cart/add"><fieldset data-input-fallback></fieldset><div data-input-mount></div><div data-payment></div></form>';
+    '<div data-gallery-fallback></div><div data-gallery-mount></div><div data-price-fallback></div><div data-price-mount></div><form action="/cart/add"><fieldset data-input-fallback></fieldset><div data-input-mount></div><div data-purchase-mount></div><div data-payment></div></form>';
   document.body.append(root);
   render(<ProductExperience root={root} initial={state("a")} />);
   return root;
 }
 async function choose(id: string) {
-  fireEvent.change(screen.getByLabelText("Model"), { target: { value: id } });
+  fireEvent.click(screen.getByRole("button", { name: id }));
   await screen.findByText(`Price ${id}`);
 }
 afterEach(() => {
@@ -133,7 +118,9 @@ it("preserves selected variant, quantity, price, gallery and purchase form when 
   });
   fireEvent.click(screen.getByRole("button", { name: "Zoom" }));
   await screen.findByText("Image failed");
-  expect((screen.getByLabelText("Model") as HTMLSelectElement).value).toBe("b");
+  expect(
+    screen.getByRole("button", { name: "b" }).getAttribute("aria-pressed"),
+  ).toBe("true");
   expect(new FormData(root.querySelector("form")!).get("id")).toBe("b");
   expect(new FormData(root.querySelector("form")!).get("quantity")).toBe("5");
   expect(screen.getByText("Price b")).toBeTruthy();
@@ -182,7 +169,7 @@ it("still pushes history when retrying a failed option selection", async () => {
       .mockResolvedValueOnce(response("b")),
   );
   setup();
-  fireEvent.change(screen.getByLabelText("Model"), { target: { value: "b" } });
+  fireEvent.click(screen.getByRole("button", { name: "b" }));
   await screen.findByRole("button", { name: "Retry" });
   const push = vi.spyOn(history, "pushState");
   fireEvent.click(screen.getByRole("button", { name: "Retry" }));

@@ -64,3 +64,13 @@ Shopify 설정 → 메타 필드 및 메타 객체 → **이형 상품**에 아�
 - 공통 값: `assets/critical.css`의 `--nara-*`; Astryx 매핑은 `src/nara-theme.tsx`.
 - 고객 문구: `locales/en.default.json`. 추가 언어는 Shopify locale 파일과 번역으로 관리합니다. 새로운 UI는 현재 영어가 기본입니다.
 - 노랑·하늘색·초록·빨강은 브랜드 그래픽 팔레트입니다. 실제 상품 색상으로 해석하지 않습니다.
+
+## 핑크 스토어 프리뷰 (2026-09-15)
+
+기본 텍스트와 미선택 옵션 이름은 `#FF8CD4`입니다. 옵션 테두리·선택 배경·포커스·구분선·hover 밑줄·조작 아이콘은 레드이며, 선택된 옵션 배지의 글자는 흰색입니다. 카트 Update/Checkout, 빈 상태 링크 버튼, 검색·비밀번호 제출 버튼은 투명 배경·레드 테두리·핑크 문구를 사용합니다. 입력값·placeholder·보조 라벨도 핑크로 통일합니다. 구매 영역의 `add to the family`는 안내 문구이며, `i’d like to order now`는 기존 장바구니 담기 form을 제출합니다. 데스크톱에서는 왼쪽 갤러리가 고정되고 오른쪽 상세 내용이 스크롤됩니다. 모바일에서는 고정을 풀고 한 열로 표시합니다.
+
+Product 섹션의 **Separate option badge**에 입력한 옵션 값(기본 `Full set`)을 별도 줄에 표시합니다. 대소문자를 구분하지 않으며, 나머지 값은 Shopify 옵션 순서를 유지합니다. 상품 handle이나 특정 variant ID를 코드에 넣지 않습니다. 모든 값은 키보드로 선택할 수 있고 품절 옵션도 사진 확인을 위해 선택 가능합니다.
+
+기존 Dawn의 아코디언은 상품 데이터가 아닌 해당 테마의 `templates/product.json` 블록 설정에 저장돼 있었습니다. 최신 운영 테마에서 Dimensions / Materials / Weight / Shipping & Returns / FAQ 내용을 읽어 커스텀 테마의 **Detail accordion** 블록으로 옮겼습니다. Shopify 테마 편집기 → Products → Default product → Product에서 제목, 본문, 연결 페이지, 순서를 수정할 수 있습니다.
+
+현재 복원한 내용은 family 제품 치수와 소재를 포함하므로 **Product for detail content**를 `family`로 지정했습니다. 다른 상품에는 이 내용을 표시하지 않습니다. 상품별 내용이 필요하면 별도 상품 템플릿에 Detail accordion 블록을 구성하거나 상품 메타필드를 동적 소스로 연결하세요. 적용 상품을 비우면 해당 템플릿을 쓰는 모든 상품에 표시됩니다. 기존 본문을 옮겼으며 배송/반품 조건을 새로 작성하지 않았습니다.

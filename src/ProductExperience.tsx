@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Selector } from "@astryxdesign/core/Selector";
+import { VariantBadges } from "./VariantBadges";
 import { ProductGallery } from "./ProductGallery";
 import { Quantity } from "./Quantity";
 import {
@@ -177,20 +177,12 @@ export function ProductExperience({
           {!state.defaultOnly &&
             state.options.map((option, index) =>
               option.values.length > 1 ? (
-                <Selector
+                <VariantBadges
                   key={option.position}
-                  label={option.name}
+                  option={option}
                   value={ids[index]}
-                  options={option.values.map((value) => ({
-                    value: value.id,
-                    label: value.name,
-                    description: value.available
-                      ? undefined
-                      : t.option_unavailable,
-                  }))}
                   onChange={(id) => choose(index, id)}
-                  width="100%"
-                  size="lg"
+                  unavailable={t.option_unavailable}
                 />
               ) : (
                 <p key={option.position}>
@@ -224,6 +216,11 @@ export function ProductExperience({
               <a href={target.current?.url.href}>{t.open_selection}</a>
             </div>
           )}
+        </div>,
+        root.querySelector("[data-input-mount]")!,
+      )}
+      {createPortal(
+        <div className="nara-purchase-actions" aria-busy={pending}>
           {state.purchaseEnabled && (
             <>
               <input
@@ -245,6 +242,7 @@ export function ProductExperience({
                 invalidMessage={t.invalid_quantity}
                 disabled={!canBuy}
               />
+              <p className="purchase-caption">{t.purchase_caption}</p>
               <button
                 type="submit"
                 name="add"
@@ -260,7 +258,7 @@ export function ProductExperience({
             </>
           )}
         </div>,
-        root.querySelector("[data-input-mount]")!,
+        root.querySelector("[data-purchase-mount]")!,
       )}
     </>
   );

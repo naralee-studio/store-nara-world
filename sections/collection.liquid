@@ -1,10 +1,7 @@
-<div class="section-space">
-  <div class="section-heading"><h1>{{ collection.title | escape }}</h1></div>
-  {% if collection.description != blank %}<div class="rte collection-description">{{ collection.description }}</div>{% endif %}
-  <form method="get" class="sort-form"><label for="Sort-{{ section.id }}">{{ 'collections.sort' | t }}</label><select id="Sort-{{ section.id }}" name="sort_by">{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}{% for option in collection.sort_options %}<option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select><button type="submit" class="button-secondary">{{ 'general.update' | t }}</button></form>
-  {% paginate collection.products by 20 %}
-    <div class="product-grid">{% for product in collection.products %}{% render 'product-card', product: product %}{% else %}<p>{{ 'collections.empty' | t }}</p>{% endfor %}</div>
-    {% if paginate.pages > 1 %}<nav class="pagination" aria-label="{{ 'general.pagination' | t }}">{{ paginate | default_pagination }}</nav>{% endif %}
-  {% endpaginate %}
+<div class="catalog-home">
+  <h1 class="visually-hidden">{{ collection.title | escape }}</h1>
+  {% render 'catalog-grid', collection: collection, limit: section.settings.limit %}
 </div>
-{% schema %}{"name":"Collection","settings":[]}{% endschema %}
+{% schema %}
+{"name":"Collection","settings":[{"type":"range","id":"limit","label":"Products per page","min":4,"max":48,"step":4,"default":12}]}
+{% endschema %}

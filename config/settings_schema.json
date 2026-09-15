@@ -49,7 +49,7 @@
         "step": 1,
         "unit": "px",
         "label": "t:labels.page_margin",
-        "default": 20
+        "default": 40
       }
     ]
   },
@@ -65,7 +65,7 @@
       {
         "type": "color",
         "id": "foreground_color",
-        "default": "#20201E",
+        "default": "#FF8CD4",
         "label": "t:labels.foreground"
       },
       {

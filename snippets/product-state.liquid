@@ -25,7 +25,7 @@
   }{% else %}null{% endif %},
   "options": [{% for option in product.options_with_values %}
     {"name": {{ option.name | json }}, "position": {{ option.position }}, "values": [{% for value in option.values %}
-      {"id": {{ value.id | append: '' | json }}, "name": {{ value.name | json }}, "selected": {{ value.selected | json }}, "available": {{ value.available | json }}, "productUrl": {{ value.product_url | json }}}{% unless forloop.last %},{% endunless %}
+      {"id": {{ value.id | append: '' | json }}, "name": {{ value.name | json }}, "selected": {{ value.selected | json }}, "standalone": {% assign badge_name = value.name | strip | downcase %}{% assign standalone_name = section.settings.standalone_option_value | strip | downcase %}{% if standalone_name != blank and badge_name == standalone_name %}true{% else %}false{% endif %}, "available": {{ value.available | json }}, "productUrl": {{ value.product_url | json }}}{% unless forloop.last %},{% endunless %}
     {% endfor %}]}{% unless forloop.last %},{% endunless %}
   {% endfor %}],
   "gallery": {
@@ -46,7 +46,7 @@
     {% endif %}{% endfor %}}
   },
   "strings": {
-    {% assign keys = 'quantity,add_to_cart,sold_out,unavailable,choose_other,updating,request_error,retry,open_selection,coming_soon,previous,next,gallery,zoom,no_image,image_error,invalid_quantity,option_unavailable,close,zoom_in,zoom_out,increment,decrement' | split: ',' %}
+    {% assign keys = 'quantity,add_to_cart,purchase_caption,sold_out,unavailable,choose_other,updating,request_error,retry,open_selection,coming_soon,previous,next,gallery,zoom,no_image,image_error,invalid_quantity,option_unavailable,close,zoom_in,zoom_out,increment,decrement' | split: ',' %}
     {% for key in keys %}{{ key | json }}: {% assign translation = 'product.' | append: key %}{{ translation | t | json }}{% unless forloop.last %},{% endunless %}{% endfor %}
   }
 }

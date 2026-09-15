@@ -74,7 +74,7 @@
     "from": "From",
     "sold_out": "Sold out",
     "quantity": "Quantity",
-    "add_to_cart": "Add to cart",
+    "add_to_cart": "i’d like to order now",
     "view_image": "View image {{ number }}",
     "no_script": "Choose an option below to update price and availability.",
     "unavailable": "Unavailable combination",
@@ -96,6 +96,7 @@
     "zoom_in": "Zoom in",
     "zoom_out": "Zoom out",
     "increment": "Increase quantity",
-    "decrement": "Decrease quantity"
+    "decrement": "Decrease quantity",
+    "purchase_caption": "add to the family"
   }
 }

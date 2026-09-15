@@ -36,8 +36,7 @@
   </div>
   <div class="product-details">
     <h1>{{ product.title | escape }}</h1>
-    <div data-price-fallback>{% if section.settings.show_price and current_variant %}<p class="product-price">{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>{% endif %}</div>
-    <div data-price-mount></div>
+    <div class="rte product-description">{{ product.description }}</div>
     {% form 'product', product, id: product_form_id %}
       {{ form.errors | default_errors }}
       <fieldset data-input-fallback class="product-fallback">
@@ -54,20 +53,109 @@
           <input type="hidden" name="id" value="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
           <label for="Quantity-{{ section.id }}">{{ 'product.quantity' | t }}</label>
           <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="{{ current_variant.quantity_rule.min | default: 1 }}" step="{{ current_variant.quantity_rule.increment | default: 1 }}" {% if current_variant.quantity_rule.max %}max="{{ current_variant.quantity_rule.max }}"{% endif %} value="{{ current_variant.quantity_rule.min | default: 1 }}" required>
+          <p class="purchase-caption">{{ 'product.purchase_caption' | t }}</p>
           <button type="submit" name="add" class="add-to-cart" {% unless current_variant.available %}disabled{% endunless %}>{% if current_variant == blank %}{{ 'product.unavailable' | t }}{% elsif current_variant.available %}{{ 'product.add_to_cart' | t }}{% else %}{{ 'product.sold_out' | t }}{% endif %}</button>
         {% endif %}
       </fieldset>
       <div data-input-mount></div>
+      {% render 'product-accordions', product: product, section: section %}
+    <div data-price-fallback>{% if section.settings.show_price and current_variant %}<p class="product-price">{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>{% endif %}</div>
+    <div data-price-mount></div>
+      <div data-purchase-mount></div>
       <div data-payment {% unless section.settings.enable_purchase and current_variant.available %}hidden inert{% endunless %}>
         {% if section.settings.show_dynamic_checkout and section.settings.enable_purchase %}{{ form | payment_button }}{% endif %}
       </div>
     {% endform %}
-    <div class="rte product-description">{{ product.description }}</div>
-    {% for block in section.blocks %}{% render block %}{% endfor %}
+    {% for block in section.blocks %}{% if block.type == '@app' %}{% render block %}{% endif %}{% endfor %}
   </div>
   <div data-product-root></div>
   {% render 'product-state', product: product, section: section %}
 </div>
 {% schema %}
-{"name":"Product","settings":[{"type":"checkbox","id":"enable_purchase","label":"Enable purchasing","info":"Enable only after this product template is approved for sale.","default":false},{"type":"checkbox","id":"show_price","label":"Show price","default":false},{"type":"checkbox","id":"show_dynamic_checkout","label":"Show accelerated checkout","default":false},{"type":"select","id":"gallery_policy","label":"Image gallery","options":[{"value":"variant_common","label":"Selected variant and shared images"},{"value":"all","label":"All product images"}],"default":"variant_common"}],"blocks":[{"type":"@app"}],"disabled_on":{"groups":["header","footer"]}}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_purchase",
+      "label": "Enable purchasing",
+      "info": "Enable only after this product template is approved for sale.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show accelerated checkout",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "gallery_policy",
+      "label": "Image gallery",
+      "options": [
+        {
+          "value": "variant_common",
+          "label": "Selected variant and shared images"
+        },
+        {
+          "value": "all",
+          "label": "All product images"
+        }
+      ],
+      "default": "variant_common"
+    },
+    {
+      "type": "text",
+      "id": "standalone_option_value",
+      "label": "Separate option badge",
+      "default": "Full set",
+      "info": "Place this option value on its own row. Matches without case sensitivity."
+    },
+    {
+      "type": "product",
+      "id": "accordion_product",
+      "label": "Product for detail content",
+      "info": "Leave empty to show detail blocks on all products using this template."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "accordion",
+      "name": "Detail accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Details"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Content page"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
 {% endschema %}
