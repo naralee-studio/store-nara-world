@@ -75,7 +75,7 @@
     "from": "From",
     "sold_out": "Sold out",
     "quantity": "Quantity",
-    "add_to_cart": "i’d like to order now",
+    "add_to_cart": "add to the family",
     "view_image": "View image {{ number }}",
     "no_script": "Choose an option below to update price and availability.",
     "unavailable": "Unavailable combination",
@@ -98,9 +98,9 @@
     "zoom_out": "Zoom out",
     "increment": "Increase quantity",
     "decrement": "Decrease quantity",
-    "purchase_caption": "add to the family",
     "share": "Share",
     "share_link": "Product link",
-    "related": "You may also like"
+    "related": "You may also like",
+    "buy_now": "i’d like to order now"
   }
 }

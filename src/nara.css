@@ -120,8 +120,8 @@
 .variant-badge:hover { opacity:1; box-shadow:inset 0 0 0 1px var(--nara-red); }
 .nara-purchase { padding:0; gap:.75rem; }
 .nara-purchase-actions { display:grid; gap:1rem; margin-top:1rem; }
-.nara-purchase-actions .add-to-cart { background:transparent; color:var(--color-foreground); border:0; padding:.75rem 0; font-size:1.5rem; line-height:1.4; }
-.nara-purchase-actions .add-to-cart:hover { opacity:1; text-decoration:underline; text-decoration-color:var(--nara-red); text-underline-offset:.25em; }
+.nara-purchase-actions .add-to-cart, .nara-purchase-actions .buy-now { background:transparent; color:var(--color-foreground); border:0; padding:.75rem 0; font-size:var(--nara-type-large); line-height:var(--nara-leading-large); }
+.nara-purchase-actions .add-to-cart:hover, .nara-purchase-actions .buy-now:hover { opacity:1; text-decoration:underline; text-decoration-color:var(--nara-red); text-underline-offset:var(--nara-underline-offset); text-decoration-thickness:var(--nara-underline-thickness); }
 .nara-purchase-actions input[role="spinbutton"] { width:100%; min-height:0; padding:0; border:0; background:transparent; }
 @media (min-width:900px) { .nara-image-button img { max-height:calc(100svh - 11rem); } }
 @media (max-width:749px) { .variant-badge { min-height:40px; padding:.3rem 1.15rem; } }

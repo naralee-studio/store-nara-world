@@ -80,6 +80,7 @@ function state(id: string): ProductState {
       retry: "Retry",
       quantity: "Quantity",
       add_to_cart: "Add",
+      buy_now: "Checkout",
       request_error: "Request failed",
     },
   };
@@ -89,13 +90,13 @@ function response(id: string) {
     `<script data-product-state type="application/json">${JSON.stringify(state(id))}</script><div data-payment></div>`,
   );
 }
-function setup() {
+function setup(initial = state("a")) {
   history.replaceState({}, "", "/products/p?variant=a");
   const root = document.createElement("div");
   root.innerHTML =
     '<div data-gallery-fallback></div><div data-gallery-mount></div><div data-price-fallback></div><div data-price-mount></div><form action="/cart/add"><fieldset data-input-fallback></fieldset><div data-input-mount></div><div data-purchase-mount></div><div data-payment></div></form>';
   document.body.append(root);
-  render(<ProductExperience root={root} initial={state("a")} />);
+  render(<ProductExperience root={root} initial={initial} />);
   return root;
 }
 async function choose(id: string) {
@@ -176,4 +177,28 @@ it("still pushes history when retrying a failed option selection", async () => {
   await screen.findByText("Price b");
   expect(push).toHaveBeenCalledTimes(1);
   expect(location.search).toBe("?variant=b");
+});
+
+it("uses the selected variant and quantity for both native submission destinations", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response("b")));
+  const root = setup();
+  await choose("b");
+  fireEvent.change(screen.getByLabelText("Quantity"), {target:{value:"5"}});
+  const sent: Array<Record<string, FormDataEntryValue>> = [];
+  root.querySelector("form")!.addEventListener("submit", event => {
+    if (!event.defaultPrevented) sent.push(Object.fromEntries(new FormData(event.currentTarget as HTMLFormElement, (event as SubmitEvent).submitter)));
+    event.preventDefault();
+  });
+  fireEvent.click(screen.getByRole("button", {name:"Add"}));
+  fireEvent.click(screen.getByRole("button", {name:"Checkout"}));
+  expect(sent).toEqual([{id:"b",quantity:"5",add:""},{id:"b",quantity:"5",return_to:"/checkout"}]);
+});
+it("preserves the locale for checkout and blocks both actions during failed option loading", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+  setup({...state("a"),localeRoot:"/fr/"});
+  expect(screen.getByRole("button", {name:"Checkout"}).getAttribute("value")).toBe("/fr/checkout");
+  fireEvent.click(screen.getByRole("button", {name:"b"}));
+  expect((screen.getByRole("button", {name:"Checkout"}) as HTMLButtonElement).disabled).toBe(true);
+  await screen.findByRole("button", {name:"Retry"});
+  for (const name of ["Add", "Checkout"]) expect((screen.getByRole("button", {name}) as HTMLButtonElement).disabled).toBe(true);
 });
