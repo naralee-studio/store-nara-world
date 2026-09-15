@@ -7,8 +7,8 @@
         "show_price": true,
         "show_dynamic_checkout": false,
         "standalone_option_value": "Full set",
-        "show_share": true,
-        "show_related": true
+        "show_share": false,
+        "show_related": false
       },
       "blocks": {
         "collapsible_tab_gTGHik": {
