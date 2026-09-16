@@ -1,0 +1,37 @@
+/* Keep Shopify's consent behavior; override only its hosted banner palette. */
+#shopify-pc__banner, #shopify-pc__prefs {
+  color:var(--nara-pink) !important;
+  background:#fff !important;
+  font-family:var(--nara-font-body) !important;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) :is(h2,h3,p,span,label,a,button) {
+  color:var(--nara-pink) !important;
+  font-family:var(--nara-font-body) !important;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) a {
+  text-decoration:underline !important;
+  text-decoration-color:var(--nara-red) !important;
+  text-underline-offset:.08em;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) button {
+  background:#fff !important;
+  border:1px solid var(--nara-red) !important;
+  box-shadow:none !important;
+  text-decoration-color:var(--nara-red) !important;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) button:hover {
+  text-decoration:underline !important;
+  text-decoration-color:var(--nara-red) !important;
+  text-underline-offset:.08em;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) :focus-visible {
+  outline:2px solid var(--nara-red) !important;
+  outline-offset:3px;
+}
+:is(#shopify-pc__banner, #shopify-pc__prefs) input { accent-color:var(--nara-red); }
+#shopify-pc__prefs .shopify-pc__prefs__option { border-color:var(--nara-red) !important; }
+#shopify-pc__prefs .shopify-pc__prefs__header-close { color:var(--nara-red) !important; }
+#shopify-pc__prefs .shopify-pc__prefs__option svg path,
+#shopify-pc__prefs .shopify-pc__prefs__header-close svg path { fill:var(--nara-red) !important; }
+#shopify-pc__prefs header { border-color:var(--nara-red) !important; }
+#shopify-pc__prefs .shopify-pc__prefs__header-close { border:0 !important; border-radius:0; min-width:44px; min-height:44px; }

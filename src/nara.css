@@ -115,9 +115,8 @@
 .variant-options { border:0; padding:0; min-width:0; }
 .variant-standalone { display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:.65rem; }
 .variant-badges { display:flex; flex-wrap:wrap; gap:.6rem; }
-.variant-badge { border:1px solid var(--nara-red); border-radius:999px; background:transparent; color:var(--color-foreground); min-height:30px; padding:.2rem 1.25rem; font-family:var(--nara-font-body); font-size:.875rem; font-weight:500; line-height:1.25; transition:background-color .15s ease,color .15s ease; }
-.variant-badge[aria-pressed="true"] { background:var(--nara-red); color:var(--color-background); }
-.variant-badge:hover { opacity:1; box-shadow:inset 0 0 0 1px var(--nara-red); }
+.variant-badge { border:1px solid var(--nara-pink); border-radius:999px; background:transparent; color:var(--color-foreground); min-height:30px; padding:.2rem 1.25rem; font-family:var(--nara-font-body); font-size:.875rem; font-weight:500; line-height:1.25; transition:background-color .15s ease,color .15s ease; }
+.variant-badge[aria-pressed="true"], .variant-badge:hover, .variant-badge:active, .variant-badge:focus-visible { background:var(--nara-red); border-color:var(--nara-red); color:var(--color-background); opacity:1; box-shadow:none; }
 .nara-purchase { padding:0; gap:.75rem; }
 .nara-purchase-actions { display:grid; gap:1rem; margin-top:1rem; }
 .nara-purchase-actions .add-to-cart, .nara-purchase-actions .buy-now { background:transparent; color:var(--color-foreground); border:0; padding:.75rem 0; font-size:var(--nara-type-large); line-height:var(--nara-leading-large); }
