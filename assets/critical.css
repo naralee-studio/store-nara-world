@@ -213,7 +213,7 @@ a { text-underline-offset:var(--nara-underline-offset); text-decoration-thicknes
 /* Match nara.world's five-link navigation geometry and responsive type. */
 .shopify-section:has(> .site-header) { min-height:70px; }
 .site-header { position:fixed; inset:0 0 auto; width:100%; min-height:0; display:flex; align-items:flex-start; justify-content:center; gap:0; padding:1.1em; z-index:99; font-size:20px; line-height:1.4; }
-.brand-nav { display:flex; justify-content:space-between; gap:.6em; width:max-content; max-width:100%; border-bottom:.1em solid #ffd300; font-family:var(--nara-font-body); font-size:20px; font-weight:500; line-height:1.4; }
+.brand-nav { display:flex; justify-content:space-between; gap:.6em; width:max-content; max-width:100%; border-bottom:.1em solid #ffd300; font-family:"Nara Navigation",var(--nara-font-body); font-size:20px; font-weight:400; line-height:1.4; }
 .brand-nav a { text-decoration:none; white-space:nowrap; padding:0; }
 .brand-nav a[aria-current] { border-top:.1em solid currentColor; }
 .brand-nav-home { color:#ffd300; }
@@ -226,5 +226,9 @@ a { text-underline-offset:var(--nara-underline-offset); text-decoration-thicknes
   .brand-nav { gap:5em; }
 }
 @media (max-width:600px) {
-  .brand-nav { font-size:clamp(14px,4.6vw,20px); }
+  .brand-nav { font-size:clamp(14px,4.6vw,20px); width:calc(100vw - 16px); max-width:none; flex-shrink:0; }
 }
+
+@font-face { font-family:"Nara Navigation"; src:url("https://nara.world/assets/fonts/neue-haas-grotesk-text-pro-65-medium.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
+.brand-nav p { margin:0; padding:0; font:inherit; letter-spacing:normal; }
+.brand-nav a { display:inline; font:inherit; letter-spacing:normal; }

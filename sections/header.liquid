@@ -23,14 +23,14 @@
             assign menu_color = 'store'
           endif
         %}
-        <a class="brand-nav-{{ menu_color }}" href="{% if is_store %}{{ routes.root_url }}{% else %}{{ link.url | escape }}{% endif %}"{% if link.current %} aria-current="page"{% elsif is_store %} aria-current="true"{% endif %}>{{ link.title | escape }}</a>
+        <p><a class="brand-nav-{{ menu_color }}" href="{% if is_store %}{{ routes.root_url }}{% else %}{{ link.url | escape }}{% endif %}"{% if link.current %} aria-current="page"{% elsif is_store %} aria-current="true"{% endif %}>{{ link.title | escape }}</a></p>
       {% endfor %}
     {% else %}
-    <a class="brand-nav-home" href="https://nara.world/">home</a>
-    <a class="brand-nav-collection" href="https://nara.world/collection/">collection</a>
-    <a class="brand-nav-store" href="{{ routes.root_url }}" aria-current="{% if request.page_type == 'index' %}page{% else %}true{% endif %}">store</a>
-    <a class="brand-nav-press" href="https://nara.world/press/">press</a>
-    <a class="brand-nav-about" href="https://nara.world/about/">about</a>
+    <p><a class="brand-nav-home" href="https://nara.world/">home</a></p>
+    <p><a class="brand-nav-collection" href="https://nara.world/collection/">collection</a></p>
+    <p><a class="brand-nav-store" href="{{ routes.root_url }}" aria-current="{% if request.page_type == 'index' %}page{% else %}true{% endif %}">store</a></p>
+    <p><a class="brand-nav-press" href="https://nara.world/press/">press</a></p>
+    <p><a class="brand-nav-about" href="https://nara.world/about/">about</a></p>
     {% endif %}
   </nav>
 </header>
