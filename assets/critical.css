@@ -226,7 +226,7 @@ a { text-underline-offset:var(--nara-underline-offset); text-decoration-thicknes
   .brand-nav { gap:5em; }
 }
 @media (max-width:600px) {
-  .brand-nav { font-size:clamp(14px,4.6vw,20px); }
+  .brand-nav { font-size:clamp(14px,4.6vw,20px); width:calc(100vw - 16px); max-width:none; flex-shrink:0; }
 }
 
 @font-face { font-family:"Nara Navigation"; src:url("https://nara.world/assets/fonts/neue-haas-grotesk-text-pro-65-medium.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
