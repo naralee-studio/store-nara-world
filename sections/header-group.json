@@ -4,7 +4,9 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "menu": "nara-preview-navigation"
+      }
     }
   },
   "order": [

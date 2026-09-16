@@ -1,9 +1,39 @@
 <header class="site-header">
-  <a class="wordmark" href="{{ routes.root_url }}">{{ section.settings.brand | escape }}</a>
-  <div class="header-actions">
-    <a href="{{ routes.cart_url }}">{{ 'cart.title' | t }} <span aria-hidden="true">({{ cart.item_count }})</span><span class="visually-hidden">{{ 'cart.item_count' | t: count: cart.item_count }}</span></a>
-  </div>
+  <nav class="brand-nav" aria-label="Main navigation">
+    {% if section.settings.menu != blank %}
+      {% for link in section.settings.menu.links %}
+        {% liquid
+          assign menu_color = 'store'
+          assign menu_url = link.url | remove: 'https://www.nara.world' | remove: 'https://nara.world'
+          case menu_url
+            when '/', ''
+              unless link.type == 'frontpage_link'
+                assign menu_color = 'home'
+              endunless
+            when '/collection/', '/collection'
+              assign menu_color = 'collection'
+            when '/press/', '/press'
+              assign menu_color = 'press'
+            when '/about/', '/about'
+              assign menu_color = 'about'
+          endcase
+          assign is_store = false
+          if link.type == 'frontpage_link' or link.url == shop.url or link.url == 'https://store.nara.world/'
+            assign is_store = true
+            assign menu_color = 'store'
+          endif
+        %}
+        <a class="brand-nav-{{ menu_color }}" href="{% if is_store %}{{ routes.root_url }}{% else %}{{ link.url | escape }}{% endif %}"{% if link.current %} aria-current="page"{% elsif is_store %} aria-current="true"{% endif %}>{{ link.title | escape }}</a>
+      {% endfor %}
+    {% else %}
+    <a class="brand-nav-home" href="https://nara.world/">home</a>
+    <a class="brand-nav-collection" href="https://nara.world/collection/">collection</a>
+    <a class="brand-nav-store" href="{{ routes.root_url }}" aria-current="{% if request.page_type == 'index' %}page{% else %}true{% endif %}">store</a>
+    <a class="brand-nav-press" href="https://nara.world/press/">press</a>
+    <a class="brand-nav-about" href="https://nara.world/about/">about</a>
+    {% endif %}
+  </nav>
 </header>
 {% schema %}
-{"name":"Header","settings":[{"type":"text","id":"brand","label":"Wordmark","default":"nara."}]}
+{"name":"Header","settings":[{"type":"link_list","id":"menu","label":"Navigation menu","info":"Select the preview menu. When empty, the five nara.world links are shown."},{"type":"text","id":"brand","label":"Wordmark","default":"nara."}]}
 {% endschema %}

@@ -67,7 +67,7 @@ Shopify 설정 → 메타 필드 및 메타 객체 → **이형 상품**에 아�
 
 ## 핑크 스토어 프리뷰 (2026-09-15)
 
-기본 텍스트와 미선택 옵션 이름은 `#ec9ac8`입니다. 옵션 테두리·선택 배경·포커스·구분선·hover 밑줄·조작 아이콘은 레드이며, 선택된 옵션 배지의 글자는 흰색입니다. 카트 Update/Checkout, 빈 상태 링크 버튼, 검색·비밀번호 제출 버튼은 투명 배경·레드 테두리·핑크 문구를 사용합니다. 입력값·placeholder·보조 라벨도 핑크로 통일합니다. 구매 영역의 `add to the family`는 선택한 상품·수량을 카트에 담습니다. `i’d like to order now`는 같은 상품·수량을 담고 `/checkout`으로 이동합니다. 기존 카트 상품도 체크아웃에 포함됩니다. 데스크톱에서는 왼쪽 갤러리가 고정되고 오른쪽 상세 내용이 스크롤됩니다. 모바일에서는 고정을 풀고 한 열로 표시합니다.
+기본 텍스트와 미선택 옵션 이름은 `#ec9ac8`입니다. 옵션 배지의 기본 테두리는 핑크입니다. 호버·키보드 포커스·누름·선택 상태에서는 레드 배경과 테두리, 흰색 글자를 사용합니다. 구분선·hover 밑줄·조작 아이콘은 레드입니다. 카트 Update/Checkout, 빈 상태 링크 버튼, 검색·비밀번호 제출 버튼은 투명 배경·레드 테두리·핑크 문구를 사용합니다. 입력값·placeholder·보조 라벨도 핑크로 통일합니다. 구매 영역의 `add to the family`는 선택한 상품·수량을 카트에 담습니다. `i’d like to order now`는 같은 상품·수량을 담고 `/checkout`으로 이동합니다. 기존 카트 상품도 체크아웃에 포함됩니다. 데스크톱에서는 왼쪽 갤러리가 고정되고 오른쪽 상세 내용이 스크롤됩니다. 모바일에서는 고정을 풀고 한 열로 표시합니다.
 
 Product 섹션의 **Separate option badge**에 입력한 옵션 값(기본 `Full set`)을 별도 줄에 표시합니다. 대소문자를 구분하지 않으며, 나머지 값은 Shopify 옵션 순서를 유지합니다. 상품 handle이나 특정 variant ID를 코드에 넣지 않습니다. 모든 값은 키보드로 선택할 수 있고 품절 옵션도 사진 확인을 위해 선택 가능합니다.
 
@@ -91,3 +91,7 @@ Share는 복사할 수 있는 상품 URL을 표시하는 기본 링크 공유 UI
 - FAQ는 서버 HTML에 제공합니다. Google은 2026년 5월 FAQ 리치 결과 표시를 중단했습니다. https://developers.google.com/search/updates
 - 배포 검증: `node scripts/check-product-seo.mjs http://127.0.0.1:9292 /products/little-family-by-nara /products/family`로 JSON 파싱, canonical, Offer, 가격/통화, 스키마 연결과 아코디언 적용 범위를 확인합니다. Google Rich Results Test나 실제 검색 노출 보장과는 별개입니다.
 - 테마 개발 서버가 새 schema와 template을 동시에 올리면 새 설정값이 유실될 수 있습니다. 실제 HTML에서 적용 범위를 확인하고 필요하면 section/schema를 먼저 올린 다음 template/settings를 다시 동기화합니다.
+
+## Header navigation
+
+Shopify menu `Nara preview navigation` (`nara-preview-navigation`) supplies the header labels, URLs and order. Edit it in the Shopify admin menus screen; choose a different menu in the theme editor Header setting. The existing main-menu is untouched. The five links are home, collection, store, press, about. Brand URL destinations determine their colors, so renaming or reordering them preserves the palette. An empty menu setting retains the five-link fallback. This header uses one level of links.
