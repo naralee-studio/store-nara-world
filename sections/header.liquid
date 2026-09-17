@@ -4,7 +4,7 @@
       {% for link in section.settings.menu.links %}
         {% liquid
           assign menu_color = 'store'
-          assign menu_url = link.url | remove: 'https://www.nara.world' | remove: 'https://nara.world' | remove: 'https://f72ed032.nara-world.pages.dev'
+          assign menu_url = link.url | remove: 'https://www.nara.world' | remove: 'https://nara.world' | remove: 'https://0b5c15c2.nara-world.pages.dev'
           case menu_url
             when '/', ''
               unless link.type == 'frontpage_link'
