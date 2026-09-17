@@ -3,6 +3,9 @@
     "foreground_color": "#ec9ac8",
     "min_page_margin": 40,
     "organization_url": "https://nara.world/",
-    "support_email": "contact@nara.world"
+    "support_email": "contact@nara.world",
+    "sale_products": [
+      "little-family-by-nara"
+    ]
   }
 }

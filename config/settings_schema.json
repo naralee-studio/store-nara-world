@@ -95,5 +95,16 @@
         "label": "Public support email"
       }
     ]
+  },
+  {
+    "name": "Product sales",
+    "settings": [
+      {
+        "type": "product_list",
+        "id": "sale_products",
+        "label": "Products available for sale",
+        "info": "Only these products show prices and purchasing controls."
+      }
+    ]
   }
 ]

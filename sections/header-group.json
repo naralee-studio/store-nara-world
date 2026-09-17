@@ -14,7 +14,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "nara-preview-navigation"
+        "menu": "nara-production-navigation"
       }
     }
   },

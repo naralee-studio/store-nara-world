@@ -1,0 +1,10 @@
+{%- liquid
+  assign for_sale = false
+  for sale_product in settings.sale_products
+    if sale_product.id == product.id
+      assign for_sale = true
+      break
+    endif
+  endfor
+  echo for_sale
+-%}

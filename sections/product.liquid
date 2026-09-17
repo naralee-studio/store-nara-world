@@ -1,3 +1,12 @@
+{% capture sale_status %}{% render 'product-for-sale', product: product %}{% endcapture %}
+{% liquid
+  assign purchase_enabled = false
+  assign show_price = false
+  if sale_status == 'true'
+    assign purchase_enabled = section.settings.enable_purchase
+    assign show_price = section.settings.show_price
+  endif
+%}
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
   assign featured_image = nil
@@ -49,7 +58,7 @@
           {% endfor %}
           <noscript><p>{{ 'product.no_script' | t }}</p>{% for option in product.options_with_values %}{% for value in option.values %}<a href="{{ product.url }}?option_values={% for axis in product.options_with_values %}{% if axis.position == option.position %}{{ value.id }}{% else %}{% for candidate in axis.values %}{% if candidate.selected %}{{ candidate.id }}{% endif %}{% endfor %}{% endif %}{% unless forloop.last %},{% endunless %}{% endfor %}">{{ value.name | escape }}</a> {% endfor %}{% endfor %}</noscript>
         {% endunless %}
-        {% if section.settings.enable_purchase %}
+        {% if purchase_enabled %}
           <input type="hidden" name="id" value="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
           <label for="Quantity-{{ section.id }}">{{ 'product.quantity' | t }}</label>
           <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="{{ current_variant.quantity_rule.min | default: 1 }}" step="{{ current_variant.quantity_rule.increment | default: 1 }}" {% if current_variant.quantity_rule.max %}max="{{ current_variant.quantity_rule.max }}"{% endif %} value="{{ current_variant.quantity_rule.min | default: 1 }}" required>
@@ -59,11 +68,11 @@
       </fieldset>
       <div data-input-mount></div>
       {% render 'product-accordions', product: product, section: section %}
-    <div data-price-fallback>{% if section.settings.show_price and current_variant %}<p class="product-price">{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>{% endif %}</div>
+    <div data-price-fallback>{% if show_price and current_variant %}<p class="product-price">{{ current_variant.price | money_with_currency }} {% if current_variant.compare_at_price > current_variant.price %}<s>{{ current_variant.compare_at_price | money_with_currency }}</s>{% endif %}</p>{% endif %}</div>
     <div data-price-mount></div>
       <div data-purchase-mount></div>
-      <div data-payment {% unless section.settings.enable_purchase and current_variant.available %}hidden inert{% endunless %}>
-        {% if section.settings.show_dynamic_checkout and section.settings.enable_purchase %}{{ form | payment_button }}{% endif %}
+      <div data-payment {% unless purchase_enabled and current_variant.available %}hidden inert{% endunless %}>
+        {% if section.settings.show_dynamic_checkout and purchase_enabled %}{{ form | payment_button }}{% endif %}
       </div>
     {% endform %}
     {% if section.settings.show_share %}

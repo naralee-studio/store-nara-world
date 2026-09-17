@@ -9,6 +9,7 @@
   </a>
   <div class="product-card-caption">
     <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
-    <p>{% if product.price_varies %}{{ 'product.from' | t }} {% endif %}{{ product.price | money_with_currency }}{% unless product.available %} · {{ 'product.sold_out' | t }}{% endunless %}</p>
+    {% capture sale_status %}{% render 'product-for-sale', product: product %}{% endcapture %}
+    {% if sale_status == 'true' %}<p>{% if product.price_varies %}{{ 'product.from' | t }} {% endif %}{{ product.price | money_with_currency }}{% unless product.available %} · {{ 'product.sold_out' | t }}{% endunless %}</p>{% endif %}
   </div>
 </article>

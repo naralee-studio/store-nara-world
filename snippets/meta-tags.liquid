@@ -61,7 +61,8 @@
   >
 {%- endif -%}
 
-{%- if request.page_type == 'product' -%}
+{% capture sale_status %}{% render 'product-for-sale', product: product %}{% endcapture %}
+{%- if request.page_type == 'product' and sale_status == 'true' -%}
   {% capture json_lt %}\u003c{% endcapture %}
   <script type="application/ld+json">
     {{ product | structured_data | replace: '<', json_lt }}
@@ -75,6 +76,12 @@
     property="product:price:currency"
     content="{{ cart.currency.iso_code }}"
   >
+{%- elsif request.page_type == 'product' -%}
+  {% capture catalog_schema %}
+    {"@context":"https://schema.org","@type":"Product","name":{{ product.title | json }},"url":{{ canonical_url | json }},"description":{{ product.description | strip_html | json }},"image":{{ product.featured_image | image_url: width: 1600 | prepend: 'https:' | json }},"brand":{"@type":"Brand","name":"nara."}}
+  {% endcapture %}
+  {% capture json_lt %}\u003c{% endcapture %}
+  <script type="application/ld+json">{{ catalog_schema | replace: '<', json_lt }}</script>
 {%- endif -%}
 
 <meta

@@ -1,3 +1,12 @@
+{% capture sale_status %}{% render 'product-for-sale', product: product %}{% endcapture %}
+{% liquid
+  assign purchase_enabled = false
+  assign show_price = false
+  if sale_status == 'true'
+    assign purchase_enabled = section.settings.enable_purchase
+    assign show_price = section.settings.show_price
+  endif
+%}
 {% doc %}
   Minimal server-resolved state for a single product experience.
   @param {product} product
@@ -15,12 +24,12 @@
   "productUrl": {{ product.url | json }},
   "localeRoot": {{ routes.root_url | json }},
   "defaultOnly": {{ product.has_only_default_variant | json }},
-  "purchaseEnabled": {{ section.settings.enable_purchase | json }},
-  "showPrice": {{ section.settings.show_price | json }},
+  "purchaseEnabled": {{ purchase_enabled | json }},
+  "showPrice": {{ show_price | json }},
   "variant": {% if variant %}{
     "id": {{ variant.id | append: '' | json }}, "available": {{ variant.available | json }},
-    "price": {{ variant.price | money_with_currency | strip_html | json }},
-    "comparePrice": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money_with_currency | strip_html | json }}{% else %}null{% endif %},
+    "price": {% if show_price %}{{ variant.price | money_with_currency | strip_html | json }}{% else %}""{% endif %},
+    "comparePrice": {% if show_price and variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money_with_currency | strip_html | json }}{% else %}null{% endif %},
     "rule": {"min": {{ variant.quantity_rule.min | default: 1 }}, "max": {{ variant.quantity_rule.max | json }}, "increment": {{ variant.quantity_rule.increment | default: 1 }}}
   }{% else %}null{% endif %},
   "options": [{% for option in product.options_with_values %}
