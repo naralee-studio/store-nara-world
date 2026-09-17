@@ -12,6 +12,7 @@
   text-decoration:underline !important;
   text-decoration-color:var(--nara-red) !important;
   text-underline-offset:.08em;
+  text-decoration-thickness:var(--nara-underline-thickness) !important;
 }
 :is(#shopify-pc__banner, #shopify-pc__prefs) button {
   background:#fff !important;
@@ -23,6 +24,7 @@
   text-decoration:underline !important;
   text-decoration-color:var(--nara-red) !important;
   text-underline-offset:.08em;
+  text-decoration-thickness:var(--nara-underline-thickness) !important;
 }
 :is(#shopify-pc__banner, #shopify-pc__prefs) :focus-visible {
   outline:2px solid var(--nara-red) !important;
