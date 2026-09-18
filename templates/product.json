@@ -42,6 +42,26 @@
             "page": ""
           }
         },
+        "collapsible_tab_WazTXi": {
+          "type": "accordion",
+          "settings": {
+            "scope": "product",
+            "product": "family",
+            "heading": "FAQ",
+            "content": "<p><em><strong>Q: How do I clean the cover?</strong></em></p><p>Each piece features a concealed zipper, allowing the cover to be fully removed for cleaning. <strong>Dry clean only</strong> to preserve the fabric’s shape and quality.</p><p></p><p><em><strong>Q: Does it require assembly?</strong></em><strong> </strong></p><p>No assembly needed. Each piece is made entirely of foam, with no wood or hard framing inside — simply unpack and it's ready to use right away.</p><p></p><p><em><strong>Q: Can I purchase individual pieces instead of the full set?</strong></em><strong> </strong></p><p>Yes. Each piece — sofa, armchair, coffee table, side table, and footrest — is available for individual purchase. Simply select the item you'd like from the options above.</p><p><br/><em><strong>Q: Where is FAMILY made? </strong></em></p><p>Designed in Paris, family is made in South Korea by a specialist furniture atelier and upholstered in Kvadrat textiles made in the UK and Norway.</p>",
+            "page": ""
+          }
+        },
+        "family_lead_time": {
+          "type": "accordion",
+          "settings": {
+            "scope": "product",
+            "product": "family",
+            "heading": "Production & Delivery",
+            "content": "<p>Lead time: approximately 3 months from order confirmation.</p><p>As each item is made to order, please review your selection carefully before checkout.</p>",
+            "page": ""
+          }
+        },
         "little_dimensions": {
           "type": "accordion",
           "settings": {
@@ -62,16 +82,6 @@
             "page": ""
           }
         },
-        "family_lead_time": {
-          "type": "accordion",
-          "settings": {
-            "scope": "product",
-            "product": "family",
-            "heading": "Production & Delivery",
-            "content": "<p>Lead time: approximately 4 months from order confirmation.</p><p>As each item is made to order, please review your selection carefully before checkout.</p>",
-            "page": ""
-          }
-        },
         "collapsible_tab_GRtcqw": {
           "type": "accordion",
           "settings": {
@@ -79,16 +89,6 @@
             "product": "",
             "heading": "Shipping & Returns",
             "content": "<p><em><strong>Shipping</strong></em><br/>International shipping is available. Shipping rates are calculated based on the destination.</p><p><em><strong>Returns & Cancellations</strong></em><br/>Please review your selection carefully before checkout.</p><ul><li>You have the right to withdraw from your order within 14 days of delivery, in accordance with EU/French consumer law.</li><li>If you wish to return your order after delivery, return shipping costs are the customer's responsibility, and the item must be returned unused and in its original packaging.</li><li>If your item arrives damaged or defective, we cover the full cost of return, repair, or replacement — at no charge to you.</li></ul><p>Questions about your order? Contact us at contact@nara.world</p>",
-            "page": ""
-          }
-        },
-        "collapsible_tab_WazTXi": {
-          "type": "accordion",
-          "settings": {
-            "scope": "product",
-            "product": "family",
-            "heading": "FAQ",
-            "content": "<p><em><strong>Q: How do I clean the cover?</strong></em></p><p>Each piece features a concealed zipper, allowing the cover to be fully removed for cleaning. <strong>Dry clean only</strong> to preserve the fabric’s shape and quality.</p><p></p><p><em><strong>Q: Does it require assembly?</strong></em><strong> </strong></p><p>No assembly needed. Each piece is made entirely of foam, with no wood or hard framing inside — simply unpack and it's ready to use right away.</p><p></p><p><em><strong>Q: Can I purchase individual pieces instead of the full set?</strong></em><strong> </strong></p><p>Yes. Each piece — sofa, armchair, coffee table, side table, and footrest — is available for individual purchase. Simply select the item you'd like from the options above.</p><p><br/><em><strong>Q: Where is FAMILY made? </strong></em></p><p>Designed in Paris, family is made in South Korea by a specialist furniture atelier and upholstered in Kvadrat textiles made in the UK and Norway.</p>",
             "page": ""
           }
         },
@@ -107,11 +107,11 @@
         "collapsible_tab_gTGHik",
         "collapsible_tab_G3QL4V",
         "collapsible_tab_Pqbmta",
+        "collapsible_tab_WazTXi",
+        "family_lead_time",
         "little_dimensions",
         "little_weight",
-        "family_lead_time",
         "collapsible_tab_GRtcqw",
-        "collapsible_tab_WazTXi",
         "little_faq"
       ],
       "settings": {
