@@ -239,3 +239,11 @@ a { text-underline-offset:var(--nara-underline-offset); text-decoration-thicknes
 /* Slightly smaller product description; purchase actions retain their scale. */
 .product-details .product-description { font-size:18px; }
 @media (min-width:920px) { .product-details .product-description { font-size:32px; } }
+
+/* Price sits between option badges and details, with a 2:1 vertical rhythm. */
+.product-price-slot:has(.product-price) { padding-block:48px 24px; }
+.product-price-slot .product-price { margin:0; }
+.product-price-slot:has(.product-price) + .product-accordions { margin-top:0; }
+@media (max-width:749px) {
+  .product-price-slot:has(.product-price) { padding-block:32px 16px; }
+}
