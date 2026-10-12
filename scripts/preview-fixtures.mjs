@@ -3,7 +3,7 @@ import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
 const strings = JSON.parse(
-  readFileSync("locales/en.default.json", "utf8"),
+  readFileSync("locales/en.default.json", "utf8").replace(/^\s*\/\*[\s\S]*?\*\//, ""),
 ).product;
 const esc = (text) =>
   String(text)
@@ -104,7 +104,7 @@ function product(data) {
   return `<main><div class="product-layout section-space" data-product-experience>
  <div><div data-gallery-fallback>Image fallback</div><div data-gallery-mount></div></div>
  <div class="product-details"><h1>Test object.</h1><div data-price-fallback>Price fallback</div><div data-price-mount></div>
- <form method="post" action="/cart/add"><fieldset data-input-fallback><input name="id" value="${esc(data.variant?.id ?? "")}"/><input name="quantity" value="2"/></fieldset><div data-input-mount></div><div data-payment></div></form></div>
+ <form method="post" action="/cart/add"><fieldset data-input-fallback><input name="id" value="${esc(data.variant?.id ?? "")}"/><input name="quantity" value="2"/></fieldset><div data-input-mount></div><div data-purchase-mount></div><div data-payment></div></form></div>
  <div data-product-root></div><script data-product-state type="application/json">${JSON.stringify(data).replaceAll("<", "\\u003c")}</script></div></main>`;
 }
 function cart() {
