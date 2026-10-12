@@ -20,7 +20,8 @@
 .nara-gallery {
   min-width: 0;
 }
-.nara-image-button {
+.nara-image-button,
+.nara-image-static {
   position: relative;
   display: block;
   padding: 0;
@@ -28,12 +29,13 @@
   border: 0;
   background: var(--nara-image-background);
   color: var(--color-foreground);
-  cursor: zoom-in;
 }
+.nara-image-button { cursor: zoom-in; }
 .nara-image-button:hover {
   opacity: 1;
 }
-.nara-image-button img {
+.nara-image-button img,
+.nara-image-static img {
   width: 100%;
   height: auto;
   aspect-ratio: 4/3;
@@ -129,13 +131,9 @@
 .image-enlarge, .gallery-navigation button { color:var(--nara-red); }
 .nara-purchase-actions button svg, .cart-quantity button svg, .nara-lightbox button svg { color:var(--nara-red); }
 
-@media (max-width: 749px) {
-  .image-enlarge { display: none; }
-}
-
 /* Astryx 0.6's direct container holds the media and its three controls.
    Fit it to the image on desktop so controls stay over the photograph.
-   Mobile keeps the library's existing layout and control sizes. */
+   The expanded viewer is available only in the desktop product layout. */
 @media (min-width: 900px) {
   .nara-lightbox[open] {
     display: flex;

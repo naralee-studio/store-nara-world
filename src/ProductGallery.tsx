@@ -70,10 +70,27 @@ export function ProductGallery({
 }) {
   const [open, setOpen] = useState(false),
     [opened, setOpened] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
   const revision = useRef(0);
+  useLayoutEffect(() => {
+    // Match the single-column product layout, including phone landscape.
+    const query = window.matchMedia?.("(max-width: 899px)");
+    if (!query) return;
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useLayoutEffect(() => {
+    if (!isMobile) return;
+    revision.current++;
+    setOpen(false);
+    setLoading(false);
+    setLoadError(false);
+  }, [isMobile]);
   const galleryKey = JSON.stringify(
     gallery.mediaIds.map((id) => gallery.mediaById[id]),
   );
@@ -137,25 +154,35 @@ export function ProductGallery({
   }
   return (
     <div className="nara-gallery">
-      <button
-        className="nara-image-button"
-        type="button"
-        aria-label={t.zoom}
-        ref={trigger}
-        onClick={() => {
-          setOpened(true);
-          setOpen(true);
-        }}
-      >
-        <ResponsiveImage
-          key={media.id}
-          media={media}
-          fallback={t.image_error}
-        />
-        <span className="image-enlarge" aria-hidden="true">
-          ↗
-        </span>
-      </button>
+      {isMobile ? (
+        <div className="nara-image-static">
+          <ResponsiveImage
+            key={media.id}
+            media={media}
+            fallback={t.image_error}
+          />
+        </div>
+      ) : (
+        <button
+          className="nara-image-button"
+          type="button"
+          aria-label={t.zoom}
+          ref={trigger}
+          onClick={() => {
+            setOpened(true);
+            setOpen(true);
+          }}
+        >
+          <ResponsiveImage
+            key={media.id}
+            media={media}
+            fallback={t.image_error}
+          />
+          <span className="image-enlarge" aria-hidden="true">
+            ↗
+          </span>
+        </button>
+      )}
       {gallery.mediaIds.length > 1 && (
         <>
           <div className="gallery-navigation">
@@ -211,7 +238,7 @@ export function ProductGallery({
           </p>,
           dialog,
         )}
-      {opened && (
+      {opened && !isMobile && (
         <LightboxBoundary
           fallback={
             open ? (
