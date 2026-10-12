@@ -38,8 +38,9 @@ const image = (id: string) => ({
 afterEach(() => {
   cleanup();
   loader.mockReset();
+  vi.unstubAllGlobals();
 });
-function setup() {
+function setup(open = true) {
   let resolve!: () => void, reject!: (error: Error) => void;
   const promise = new Promise<void>((yes, no) => {
     resolve = yes;
@@ -70,7 +71,7 @@ function setup() {
     );
   }
   render(<Harness />);
-  fireEvent.click(screen.getByRole("button", { name: "Open" }));
+  if (open) fireEvent.click(screen.getByRole("button", { name: "Open" }));
   return { resolve, reject };
 }
 it("keeps both images on the old selection until decoding finishes", async () => {
@@ -109,4 +110,44 @@ it("keeps both images on a failed load", async () => {
   expect(
     document.querySelector(".nara-image-button img")?.getAttribute("src"),
   ).toBe("/one.jpg");
+});
+
+function mobileViewport(matches: boolean) {
+  const events = new EventTarget();
+  const query = {
+    matches,
+    addEventListener: events.addEventListener.bind(events),
+    removeEventListener: events.removeEventListener.bind(events),
+  };
+  vi.stubGlobal("matchMedia", () => query);
+  return (value: boolean) => {
+    query.matches = value;
+    act(() => events.dispatchEvent(new Event("change")));
+  };
+}
+
+it("shows a plain mobile image while keeping gallery navigation usable", () => {
+  mobileViewport(true);
+  setup(false);
+  expect(screen.queryByRole("button", { name: "Open" })).toBeNull();
+  fireEvent.click(document.querySelector(".nara-image-static img")!);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Next" }));
+  expect(document.querySelector(".nara-image-static img")?.getAttribute("src")).toBe("/two.jpg");
+  expect(loader).not.toHaveBeenCalled();
+});
+
+it("closes the viewer on mobile resize and ignores pending image changes", async () => {
+  const resize = mobileViewport(false);
+  const pending = setup();
+  fireEvent.click(await screen.findByRole("button", { name: "Next expanded" }));
+  resize(true);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Open" })).toBeNull();
+  await act(async () => pending.resolve());
+  expect(document.querySelector(".nara-image-static img")?.getAttribute("src")).toBe("/one.jpg");
+  resize(false);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Open" }));
+  expect(await screen.findByRole("dialog")).toBeTruthy();
 });
