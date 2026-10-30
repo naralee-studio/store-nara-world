@@ -28,7 +28,7 @@
             "scope": "product",
             "product": "family",
             "heading": "Materials",
-            "content": "<p><strong>Cover:</strong> Textiles made in Italy</p><p>• Sofa: 100% Polyester, textile made in Italy<br/>• Armchair (yellow): 100% Polyester, textile made in Italy<br/>• Armchair (pink): 100% Polyester, textile made in Italy<br/>• Side Table: 100% Polyester, textile made in Italy<br/>• Coffee Table: 100% Polyester, textile made in Italy<br/>• Footrest: 100% Polyester, textile made in Italy</p><p><strong>Foam: </strong>High-density polyurethane foam core, foam made in South Korea</p>",
+            "content": "<p><strong>Cover:</strong> Textiles made in Italy</p><ul><li>Sofa: 100% Polyester, textile made in Italy</li><li>Armchair (yellow): 100% Polyester, textile made in Italy</li><li>Armchair (pink): 100% Polyester, textile made in Italy</li><li>Side Table: 100% Polyester, textile made in Italy</li><li>Coffee Table: 100% Polyester, textile made in Italy</li><li>Footrest: 100% Polyester, textile made in Italy</li></ul><p><strong>Foam: </strong>High-density polyurethane foam core, foam made in South Korea</p>",
             "page": ""
           }
         },
